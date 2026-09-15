@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: run-dialog 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 23:00+0800\n"
+"POT-Creation-Date: 2026-09-16 00:27+0800\n"
 "PO-Revision-Date: 2026-09-13 09:12+0800\n"
 "Last-Translator: Age10 Moyu\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -16,168 +16,169 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/main.rs:518 src/main.rs:545 src/main.rs:898 src/settings.rs:181
+#: src/main.rs:531 src/main.rs:560 src/main.rs:913 src/settings.rs:181
+#: src/help.rs:26
 msgid "Run"
 msgstr "运行"
 
-#: src/main.rs:561
+#: src/main.rs:576
 msgid ""
 "Type the name of a program, folder, document, or Internet resource, and {1} "
 "will open it for you."
 msgstr "{1} 将根据你所输入的名称，为你打开相应的程序、文档或 Internet 资源。"
 
-#: src/main.rs:577
+#: src/main.rs:592
 msgid "Open (_O):"
 msgstr "打开 (_O):"
 
-#: src/main.rs:597 src/main.rs:600
+#: src/main.rs:612 src/main.rs:615
 msgid "Creating this task with administrative privileges."
 msgstr "使用管理权限创建此任务。"
 
-#: src/main.rs:607
+#: src/main.rs:622
 msgid "Run this program as an administrator"
 msgstr "以系统管理员权限创建此任务。"
 
-#: src/main.rs:638 src/main.rs:934 src/main.rs:1455
+#: src/main.rs:653 src/main.rs:949 src/main.rs:1470
 msgid "OK"
 msgstr "确定"
 
-#: src/main.rs:643
+#: src/main.rs:658
 msgid "Cancel"
 msgstr "取消"
 
-#: src/main.rs:646
+#: src/main.rs:661
 msgid "_Browse..."
 msgstr "浏览(_B)..."
 
-#: src/main.rs:865
+#: src/main.rs:880
 msgid "File"
 msgstr "文件"
 
-#: src/main.rs:1007
+#: src/main.rs:1022
 msgid "User Account Control"
 msgstr "用户账户控制"
 
-#: src/main.rs:1023
+#: src/main.rs:1038
 msgid "Do you want to allow this app to make changes to your device?"
 msgstr "你要允许此应用对你的设备进行更改吗？"
 
-#: src/main.rs:1052 src/main.rs:1058
+#: src/main.rs:1067 src/main.rs:1073
 msgid "Unknown publisher"
 msgstr "未知发布者"
 
-#: src/main.rs:1053
+#: src/main.rs:1068
 msgid "Verified publisher: {1}"
 msgstr "已验证的发布者: {1}"
 
-#: src/main.rs:1059
+#: src/main.rs:1074
 msgid "Unverified publisher: {1}"
 msgstr "未验证的发布者: {1}"
 
-#: src/main.rs:1073 src/main.rs:1091
+#: src/main.rs:1088 src/main.rs:1106
 msgid "Show details (_D)"
 msgstr "显示详细信息(_D)"
 
-#: src/main.rs:1089
+#: src/main.rs:1104
 msgid "Hide details (_D)"
 msgstr "隐藏详细信息(_D)"
 
-#: src/main.rs:1103
+#: src/main.rs:1118
 msgid "Program location:"
 msgstr "程序位置:"
 
-#: src/main.rs:1119
+#: src/main.rs:1134
 msgid "This program is not digitally signed."
 msgstr "此程序未签名。"
 
-#: src/main.rs:1130
+#: src/main.rs:1145
 msgid "To continue, type an administrator user name and password."
 msgstr "若要继续，请输入管理员用户名和密码。"
 
-#: src/main.rs:1141
+#: src/main.rs:1156
 msgid "User name"
 msgstr "用户名"
 
-#: src/main.rs:1147
+#: src/main.rs:1162
 msgid "Password"
 msgstr "密码"
 
-#: src/main.rs:1166
+#: src/main.rs:1181
 msgid "Yes"
 msgstr "是"
 
-#: src/main.rs:1170
+#: src/main.rs:1185
 msgid "No"
 msgstr "否"
 
-#: src/main.rs:1251
+#: src/main.rs:1266
 msgid "Authentication failed: {1}"
 msgstr "认证失败：{1}"
 
-#: src/main.rs:1264
+#: src/main.rs:1279
 msgid "Authentication failed."
 msgstr "认证失败。"
 
-#: src/main.rs:1372
+#: src/main.rs:1387
 msgid "Publisher information"
 msgstr "发布者信息"
 
-#: src/main.rs:1389
+#: src/main.rs:1404
 msgid ""
 "This platform does not provide code signing for desktop applications. The "
 "information below is descriptive only and does not verify the publisher."
 msgstr ""
 "本平台不提供桌面应用的代码签名。以下信息仅供参考，不能用于验证发布者身份。"
 
-#: src/main.rs:1397
+#: src/main.rs:1412
 msgid "Program"
 msgstr "程序"
 
-#: src/main.rs:1410
+#: src/main.rs:1425
 msgid "Path"
 msgstr "路径"
 
-#: src/main.rs:1412
+#: src/main.rs:1427
 msgid "Resolved path"
 msgstr "实际路径"
 
-#: src/main.rs:1420
+#: src/main.rs:1435
 msgid "Read from the binary's own metadata"
 msgstr "读取自二进制文件自身的元数据"
 
-#: src/main.rs:1421
+#: src/main.rs:1436
 msgid "Looked up via the package manager"
 msgstr "通过包管理器反查得到"
 
-#: src/main.rs:1422
+#: src/main.rs:1437
 msgid "Could not be determined"
 msgstr "无法确定"
 
-#: src/main.rs:1425
+#: src/main.rs:1440
 msgid "Publisher"
 msgstr "发布者"
 
-#: src/main.rs:1432
+#: src/main.rs:1447
 msgid "File type"
 msgstr "文件类型"
 
-#: src/main.rs:1434
+#: src/main.rs:1449
 msgid "Size"
 msgstr "大小"
 
-#: src/main.rs:1439
+#: src/main.rs:1454
 msgid "Build ID"
 msgstr "构建 ID"
 
-#: src/main.rs:1442
+#: src/main.rs:1457
 msgid "Not a signature"
 msgstr "非签名"
 
-#: src/main.rs:1445
+#: src/main.rs:1460
 msgid "Desktop entry"
 msgstr "桌面条目"
 
-#: src/main.rs:1662
+#: src/main.rs:1677
 msgid ""
 "{1} cannot find '{2}'. Make sure you typed the name correctly, and then try "
 "it again."
@@ -205,16 +206,16 @@ msgid ""
 "default, experimental only."
 msgstr "模拟 Windows 运行框的路径与命令翻译。默认关闭，仅供实验。"
 
-#: src/settings.rs:65 src/intro.rs:292
+#: src/settings.rs:65 src/intro.rs:299
 msgid "Enable Windows path translation"
 msgstr "启用 Windows 路径翻译"
 
-#: src/settings.rs:67 src/intro.rs:294
+#: src/settings.rs:67 src/intro.rs:301
 msgid ""
 "Map C:\\ paths to their Linux counterparts and translate common .exe names"
 msgstr "把 C:\\ 路径映射到 Linux 对应位置，并翻译常见 .exe"
 
-#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:550
+#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:560
 msgid "Failed to save settings: {1}"
 msgstr "保存配置失败：{1}"
 
@@ -222,11 +223,11 @@ msgstr "保存配置失败：{1}"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/settings.rs:91 src/intro.rs:302
+#: src/settings.rs:91 src/intro.rs:309
 msgid "Choose when several apps match"
 msgstr "多个应用匹配时弹出选择"
 
-#: src/settings.rs:93 src/intro.rs:304
+#: src/settings.rs:93 src/intro.rs:311
 msgid "Show a list to pick from instead of launching the first match"
 msgstr "列出所有匹配项让用户选择，而不是直接启动第一个"
 
@@ -260,224 +261,318 @@ msgstr "GNOME 风格的运行对话框"
 msgid "Application ID"
 msgstr "应用 ID"
 
-#: src/intro.rs:67 src/intro.rs:213
+#: src/intro.rs:74 src/intro.rs:220
 msgid "Welcome to Run"
 msgstr "欢迎使用「运行」"
 
-#: src/intro.rs:96
+#: src/intro.rs:103
 msgid "Back"
 msgstr "上一步"
 
-#: src/intro.rs:97 src/intro.rs:127
+#: src/intro.rs:104 src/intro.rs:134
 msgid "Next"
 msgstr "下一步"
 
-#: src/intro.rs:125
+#: src/intro.rs:132
 msgid "Done"
 msgstr "完成"
 
-#: src/intro.rs:217
+#: src/intro.rs:224 src/help.rs:27
 msgid "Type a command, a path or a web address, then press Enter."
 msgstr "输入命令、路径或网址，然后按回车。"
 
-#: src/intro.rs:220
+#: src/intro.rs:227
 msgid ""
 "The next few pages cover the shortcuts, appearance and a couple of options."
 msgstr "接下来几页会介绍快捷键、外观，以及几个可选项。"
 
-#: src/intro.rs:233
+#: src/intro.rs:240
 msgid "Why use this instead?"
 msgstr "为什么选择它？"
 
-#: src/intro.rs:238
+#: src/intro.rs:245
 msgid "Compared with the GNOME run dialog"
 msgstr "与 GNOME 自带运行窗口的对比"
 
-#: src/intro.rs:246
+#: src/intro.rs:253
 msgid "Finds commands, files, folders and apps in one box"
 msgstr "一个输入框就能找命令、文件、文件夹和应用"
 
-#: src/intro.rs:247
+#: src/intro.rs:254
 msgid ""
 "A single lookup order covers executables, paths, desktop entries and URLs, "
 "so you never have to think about which one you are typing."
 msgstr "统一的查找顺序覆盖可执行文件、路径、桌面条目与网址，不必先想清楚自己输入的是哪一类。"
+"统一的查找顺序覆盖可执行文件、路径、桌面条目与网址，不必先想清楚自己输入的是"
+"哪一类。"
 
-#: src/intro.rs:250
+#: src/intro.rs:257
 msgid "Never goes through a shell"
 msgstr "绝不经过 shell"
 
-#: src/intro.rs:251
+#: src/intro.rs:258
 msgid ""
 "Arguments are passed as an argument vector, so wildcards, pipes and "
 "variables are not silently expanded. This avoids injection surprises."
 msgstr "参数以数组形式直接传递，通配符、管道与变量不会被悄悄展开，避免注入带来的意外。"
+"参数以数组形式直接传递，通配符、管道与变量不会被悄悄展开，避免注入带来的意"
+"外。"
 
-#: src/intro.rs:254
+#: src/intro.rs:261
 msgid "Opens a terminal only when the program needs one"
 msgstr "仅在程序确实需要时才开终端"
 
-#: src/intro.rs:255
+#: src/intro.rs:262
 msgid ""
 "Interpreters such as python or gdb are detected and wrapped in a terminal "
 "automatically; ls or cat are left alone."
 msgstr "python、gdb 这类解释器会被识别并自动包进终端；ls、cat 则保持原样。"
 
-#: src/intro.rs:258
+#: src/intro.rs:265
 msgid "Runs programs as administrator, UAC style"
 msgstr "以管理员身份运行程序，仿 Windows UAC"
 
-#: src/intro.rs:259
+#: src/intro.rs:266
 msgid ""
 "A consent dialog collects your password and hands it to sudo's askpass "
 "helper. The password is wiped from memory as soon as it is used."
 msgstr "仿 UAC 对话框收集密码后交给 sudo 的 askpass 助手，密码用毕立即从内存中擦除。"
+"仿 UAC 对话框收集密码后交给 sudo 的 askpass 助手，密码用毕立即从内存中擦除。"
 
-#: src/intro.rs:285
+#: src/intro.rs:292
 msgid "Choose your preferences"
 msgstr "选择你的偏好"
 
-#: src/intro.rs:313
+#: src/intro.rs:320
 msgid "Both options are off by default, matching the Windows Run box."
 msgstr "两项默认都是关闭的，与 Windows 的「运行」窗口一致。"
 
-#: src/intro.rs:326
+#: src/intro.rs:333
 msgid "Set up a shortcut"
 msgstr "设置快捷键"
 
-#: src/intro.rs:331
+#: src/intro.rs:338
 msgid "Keyboard shortcut"
 msgstr "键盘快捷键"
 
-#: src/intro.rs:338 src/intro.rs:365
+#: src/intro.rs:345 src/intro.rs:372
 msgid "Super+R is already set up for Run."
 msgstr "Super+R 已注册给「运行」。"
 
-#: src/intro.rs:342
+#: src/intro.rs:349
 msgid "{1} currently uses Super+R."
 msgstr "「{1}」当前占用了 Super+R。"
 
-#: src/intro.rs:344
+#: src/intro.rs:351
 msgid "Super+R is free."
 msgstr "Super+R 当前空闲。"
 
-#: src/intro.rs:348
+#: src/intro.rs:355
 msgid "Open Run with Super+R"
 msgstr "用 Super+R 打开「运行」"
 
-#: src/intro.rs:352
+#: src/intro.rs:359
 msgid "Set Up"
 msgstr "注册"
 
-#: src/intro.rs:369
+#: src/intro.rs:376
 msgid "Could not set up the shortcut: {1}"
 msgstr "注册快捷键失败：{1}"
 
-#: src/intro.rs:379
+#: src/intro.rs:386
 msgid "Setting it up will override the shortcut that uses it now."
 msgstr "注册后会覆盖目前占用它的那个快捷键。"
 
-#: src/intro.rs:398
+#: src/intro.rs:403
 msgid "Pick an appearance"
 msgstr "选择外观"
 
-#: src/intro.rs:403
+#: src/intro.rs:408
 msgid "Interface style"
 msgstr "界面风格"
 
-#: src/intro.rs:410
+#: src/intro.rs:415
 msgid "Follow the system"
 msgstr "跟随系统"
 
-#: src/intro.rs:411
+#: src/intro.rs:416
 msgid "Use whatever the desktop is already set to"
 msgstr "沿用桌面当前的设置"
 
-#: src/intro.rs:416
+#: src/intro.rs:421
 msgid "Light"
 msgstr "浅色"
 
-#: src/intro.rs:417
+#: src/intro.rs:422
 msgid "Always use the light style"
 msgstr "始终使用浅色风格"
 
-#: src/intro.rs:422
+#: src/intro.rs:427
 msgid "Dark"
 msgstr "深色"
 
-#: src/intro.rs:423
+#: src/intro.rs:428
 msgid "Always use the dark style"
 msgstr "始终使用深色风格"
 
-#: src/intro.rs:459
+#: src/intro.rs:469
 msgid "This changes the appearance for the whole desktop, not just Run."
 msgstr "这会改变整个桌面的外观，而不只是「运行」。"
 
-#: src/intro.rs:472
+#: src/intro.rs:482
 msgid "Interface language"
 msgstr "界面语言"
 
-#: src/intro.rs:477
+#: src/intro.rs:487
 msgid "How the language is chosen"
 msgstr "语言是如何决定的"
 
-#: src/intro.rs:480
+#: src/intro.rs:490
 msgid "(not set)"
 msgstr "（未设置）"
 
-#: src/intro.rs:485
+#: src/intro.rs:495
 msgid "Current system language"
 msgstr "当前系统语言"
 
-#: src/intro.rs:487
+#: src/intro.rs:497
 msgid "Locale name"
 msgstr "区域名"
 
-#: src/intro.rs:489
+#: src/intro.rs:499
 msgid "Looks valid."
 msgstr "看起来合法。"
 
-#: src/intro.rs:491
+#: src/intro.rs:501
 msgid "This is not a valid locale name, so English is used instead."
 msgstr "这不是合法的 locale 名称，因此界面会退回英文。"
 
-#: src/intro.rs:495
+#: src/intro.rs:505
 msgid "Translation installed"
 msgstr "译文安装状态"
 
-#: src/intro.rs:497
+#: src/intro.rs:507
 msgid "Found at {1}"
 msgstr "位于 {1}"
 
-#: src/intro.rs:498
+#: src/intro.rs:508
 msgid "Not found. Run the installer to copy it."
 msgstr "未找到。请运行安装脚本以复制译文。"
 
-#: src/intro.rs:513
+#: src/intro.rs:523
 msgid ""
 "Run decides its language from the desktop locale. It cannot be switched "
 "inside the program."
 msgstr "「运行」的语言由桌面区域设置决定，无法在程序内单独切换。"
 
-#: src/intro.rs:526
+#: src/intro.rs:536
 msgid "You are all set"
 msgstr "设置完成"
 
-#: src/intro.rs:530
+#: src/intro.rs:540
 msgid "Press Super+R to open the run dialog at any time."
 msgstr "随时按 Super+R 即可打开运行对话框。"
 
-#: src/intro.rs:533
+#: src/intro.rs:543
 msgid "Run \"run-dialog settings\" to revisit the options."
 msgstr "输入 run-dialog settings 可随时回到设置界面。"
 
-#: src/intro.rs:617
+#: src/intro.rs:627
 msgid "an unnamed shortcut"
 msgstr "一个未命名的快捷键"
 
-#: src/intro.rs:650
+#: src/intro.rs:660
 msgid "Show the run command prompt"
 msgstr "显示运行命令提示符"
+
+#: src/help.rs:31
+msgid "Usage"
+msgstr "用法"
+
+#: src/help.rs:33
+msgid "Open the run dialog"
+msgstr "打开运行对话框"
+
+#: src/help.rs:36
+msgid "Open the settings window"
+msgstr "打开设置窗口"
+
+#: src/help.rs:39
+msgid "Run the first-time setup wizard"
+msgstr "运行首次设置向导"
+
+#: src/help.rs:42
+msgid "Show this help"
+msgstr "显示本帮助"
+
+#: src/help.rs:46
+msgid "How input is resolved"
+msgstr "输入如何解析"
+
+#: src/help.rs:48
+msgid "A web address or known URI scheme is opened by the default handler"
+msgstr "网址或已知的 URI 协议，交给默认处理器打开"
+
+#: src/help.rs:49
+msgid "An explicit path is launched, or opened with the default application"
+msgstr "显式路径：可执行文件直接启动，否则用默认程序打开"
+
+#: src/help.rs:50
+msgid ""
+"Otherwise the current directory, the system directories and $PATH are "
+"searched"
+msgstr "否则依次搜索当前目录、系统目录与 $PATH"
+
+#: src/help.rs:51
+msgid "Then desktop entries from the XDG, Flatpak and Snap databases"
+msgstr "接着查 XDG、Flatpak、Snap 三处的桌面条目"
+
+#: src/help.rs:52
+msgid "As a last resort the input is handed to xdg-open"
+msgstr "最后兜底交给 xdg-open"
+
+#: src/help.rs:62
+msgid "Things worth knowing"
+msgstr "值得知道的几点"
+
+#: src/help.rs:64
+msgid ""
+"Arguments are passed as an argument vector, so wildcards, pipes and "
+"variables are not expanded"
+msgstr "参数以数组形式传递，通配符、管道、变量都不会被展开"
+
+#: src/help.rs:65
+msgid "Interpreters such as python or gdb open in a terminal automatically"
+msgstr "python、gdb 这类解释器会自动开终端运行"
+
+#: src/help.rs:66
+msgid ""
+"Tick the administrator checkbox to run a program with elevated privileges"
+msgstr "勾选「以系统管理员权限创建此任务」可提权运行程序"
+
+#: src/help.rs:73
+msgid "Files"
+msgstr "文件"
+
+#: src/help.rs:75
+msgid "Settings"
+msgstr "设置"
+
+#: src/help.rs:78
+msgid "Command history"
+msgstr "命令历史"
+
+#: src/help.rs:80
+msgid "Run \"man run-dialog\" for the full manual."
+msgstr "完整手册请见 man run-dialog。"
+
+#: src/help.rs:97
+msgid "Help"
+msgstr "帮助"
+
+#: src/help.rs:124
+msgid "Close"
+msgstr "关闭"
 
 #~ msgid ""
 #~ "The next page covers a couple of options. You can change them later in "

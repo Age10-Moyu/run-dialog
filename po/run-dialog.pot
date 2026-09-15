@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: run-dialog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 23:00+0800\n"
+"POT-Creation-Date: 2026-09-16 00:27+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,167 +17,168 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/main.rs:518 src/main.rs:545 src/main.rs:898 src/settings.rs:181
+#: src/main.rs:531 src/main.rs:560 src/main.rs:913 src/settings.rs:181
+#: src/help.rs:26
 msgid "Run"
 msgstr ""
 
-#: src/main.rs:561
+#: src/main.rs:576
 msgid ""
 "Type the name of a program, folder, document, or Internet resource, and {1} "
 "will open it for you."
 msgstr ""
 
-#: src/main.rs:577
+#: src/main.rs:592
 msgid "Open (_O):"
 msgstr ""
 
-#: src/main.rs:597 src/main.rs:600
+#: src/main.rs:612 src/main.rs:615
 msgid "Creating this task with administrative privileges."
 msgstr ""
 
-#: src/main.rs:607
+#: src/main.rs:622
 msgid "Run this program as an administrator"
 msgstr ""
 
-#: src/main.rs:638 src/main.rs:934 src/main.rs:1455
+#: src/main.rs:653 src/main.rs:949 src/main.rs:1470
 msgid "OK"
 msgstr ""
 
-#: src/main.rs:643
+#: src/main.rs:658
 msgid "Cancel"
 msgstr ""
 
-#: src/main.rs:646
+#: src/main.rs:661
 msgid "_Browse..."
 msgstr ""
 
-#: src/main.rs:865
+#: src/main.rs:880
 msgid "File"
 msgstr ""
 
-#: src/main.rs:1007
+#: src/main.rs:1022
 msgid "User Account Control"
 msgstr ""
 
-#: src/main.rs:1023
+#: src/main.rs:1038
 msgid "Do you want to allow this app to make changes to your device?"
 msgstr ""
 
-#: src/main.rs:1052 src/main.rs:1058
+#: src/main.rs:1067 src/main.rs:1073
 msgid "Unknown publisher"
 msgstr ""
 
-#: src/main.rs:1053
+#: src/main.rs:1068
 msgid "Verified publisher: {1}"
 msgstr ""
 
-#: src/main.rs:1059
+#: src/main.rs:1074
 msgid "Unverified publisher: {1}"
 msgstr ""
 
-#: src/main.rs:1073 src/main.rs:1091
+#: src/main.rs:1088 src/main.rs:1106
 msgid "Show details (_D)"
 msgstr ""
 
-#: src/main.rs:1089
+#: src/main.rs:1104
 msgid "Hide details (_D)"
 msgstr ""
 
-#: src/main.rs:1103
+#: src/main.rs:1118
 msgid "Program location:"
 msgstr ""
 
-#: src/main.rs:1119
+#: src/main.rs:1134
 msgid "This program is not digitally signed."
 msgstr ""
 
-#: src/main.rs:1130
+#: src/main.rs:1145
 msgid "To continue, type an administrator user name and password."
 msgstr ""
 
-#: src/main.rs:1141
+#: src/main.rs:1156
 msgid "User name"
 msgstr ""
 
-#: src/main.rs:1147
+#: src/main.rs:1162
 msgid "Password"
 msgstr ""
 
-#: src/main.rs:1166
+#: src/main.rs:1181
 msgid "Yes"
 msgstr ""
 
-#: src/main.rs:1170
+#: src/main.rs:1185
 msgid "No"
 msgstr ""
 
-#: src/main.rs:1251
+#: src/main.rs:1266
 msgid "Authentication failed: {1}"
 msgstr ""
 
-#: src/main.rs:1264
+#: src/main.rs:1279
 msgid "Authentication failed."
 msgstr ""
 
-#: src/main.rs:1372
+#: src/main.rs:1387
 msgid "Publisher information"
 msgstr ""
 
-#: src/main.rs:1389
+#: src/main.rs:1404
 msgid ""
 "This platform does not provide code signing for desktop applications. The "
 "information below is descriptive only and does not verify the publisher."
 msgstr ""
 
-#: src/main.rs:1397
+#: src/main.rs:1412
 msgid "Program"
 msgstr ""
 
-#: src/main.rs:1410
+#: src/main.rs:1425
 msgid "Path"
 msgstr ""
 
-#: src/main.rs:1412
+#: src/main.rs:1427
 msgid "Resolved path"
 msgstr ""
 
-#: src/main.rs:1420
+#: src/main.rs:1435
 msgid "Read from the binary's own metadata"
 msgstr ""
 
-#: src/main.rs:1421
+#: src/main.rs:1436
 msgid "Looked up via the package manager"
 msgstr ""
 
-#: src/main.rs:1422
+#: src/main.rs:1437
 msgid "Could not be determined"
 msgstr ""
 
-#: src/main.rs:1425
+#: src/main.rs:1440
 msgid "Publisher"
 msgstr ""
 
-#: src/main.rs:1432
+#: src/main.rs:1447
 msgid "File type"
 msgstr ""
 
-#: src/main.rs:1434
+#: src/main.rs:1449
 msgid "Size"
 msgstr ""
 
-#: src/main.rs:1439
+#: src/main.rs:1454
 msgid "Build ID"
 msgstr ""
 
-#: src/main.rs:1442
+#: src/main.rs:1457
 msgid "Not a signature"
 msgstr ""
 
-#: src/main.rs:1445
+#: src/main.rs:1460
 msgid "Desktop entry"
 msgstr ""
 
-#: src/main.rs:1662
+#: src/main.rs:1677
 msgid ""
 "{1} cannot find '{2}'. Make sure you typed the name correctly, and then try "
 "it again."
@@ -205,16 +206,16 @@ msgid ""
 "default, experimental only."
 msgstr ""
 
-#: src/settings.rs:65 src/intro.rs:292
+#: src/settings.rs:65 src/intro.rs:299
 msgid "Enable Windows path translation"
 msgstr ""
 
-#: src/settings.rs:67 src/intro.rs:294
+#: src/settings.rs:67 src/intro.rs:301
 msgid ""
 "Map C:\\ paths to their Linux counterparts and translate common .exe names"
 msgstr ""
 
-#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:550
+#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:560
 msgid "Failed to save settings: {1}"
 msgstr ""
 
@@ -222,11 +223,11 @@ msgstr ""
 msgid "Behavior"
 msgstr ""
 
-#: src/settings.rs:91 src/intro.rs:302
+#: src/settings.rs:91 src/intro.rs:309
 msgid "Choose when several apps match"
 msgstr ""
 
-#: src/settings.rs:93 src/intro.rs:304
+#: src/settings.rs:93 src/intro.rs:311
 msgid "Show a list to pick from instead of launching the first match"
 msgstr ""
 
@@ -260,221 +261,310 @@ msgstr ""
 msgid "Application ID"
 msgstr ""
 
-#: src/intro.rs:67 src/intro.rs:213
+#: src/intro.rs:74 src/intro.rs:220
 msgid "Welcome to Run"
 msgstr ""
 
-#: src/intro.rs:96
+#: src/intro.rs:103
 msgid "Back"
 msgstr ""
 
-#: src/intro.rs:97 src/intro.rs:127
+#: src/intro.rs:104 src/intro.rs:134
 msgid "Next"
 msgstr ""
 
-#: src/intro.rs:125
+#: src/intro.rs:132
 msgid "Done"
 msgstr ""
 
-#: src/intro.rs:217
+#: src/intro.rs:224 src/help.rs:27
 msgid "Type a command, a path or a web address, then press Enter."
 msgstr ""
 
-#: src/intro.rs:220
+#: src/intro.rs:227
 msgid ""
 "The next few pages cover the shortcuts, appearance and a couple of options."
 msgstr ""
 
-#: src/intro.rs:233
+#: src/intro.rs:240
 msgid "Why use this instead?"
 msgstr ""
 
-#: src/intro.rs:238
+#: src/intro.rs:245
 msgid "Compared with the GNOME run dialog"
 msgstr ""
 
-#: src/intro.rs:246
+#: src/intro.rs:253
 msgid "Finds commands, files, folders and apps in one box"
 msgstr ""
 
-#: src/intro.rs:247
+#: src/intro.rs:254
 msgid ""
 "A single lookup order covers executables, paths, desktop entries and URLs, "
 "so you never have to think about which one you are typing."
 msgstr ""
 
-#: src/intro.rs:250
+#: src/intro.rs:257
 msgid "Never goes through a shell"
 msgstr ""
 
-#: src/intro.rs:251
+#: src/intro.rs:258
 msgid ""
 "Arguments are passed as an argument vector, so wildcards, pipes and "
 "variables are not silently expanded. This avoids injection surprises."
 msgstr ""
 
-#: src/intro.rs:254
+#: src/intro.rs:261
 msgid "Opens a terminal only when the program needs one"
 msgstr ""
 
-#: src/intro.rs:255
+#: src/intro.rs:262
 msgid ""
 "Interpreters such as python or gdb are detected and wrapped in a terminal "
 "automatically; ls or cat are left alone."
 msgstr ""
 
-#: src/intro.rs:258
+#: src/intro.rs:265
 msgid "Runs programs as administrator, UAC style"
 msgstr ""
 
-#: src/intro.rs:259
+#: src/intro.rs:266
 msgid ""
 "A consent dialog collects your password and hands it to sudo's askpass "
 "helper. The password is wiped from memory as soon as it is used."
 msgstr ""
 
-#: src/intro.rs:285
+#: src/intro.rs:292
 msgid "Choose your preferences"
 msgstr ""
 
-#: src/intro.rs:313
+#: src/intro.rs:320
 msgid "Both options are off by default, matching the Windows Run box."
 msgstr ""
 
-#: src/intro.rs:326
+#: src/intro.rs:333
 msgid "Set up a shortcut"
 msgstr ""
 
-#: src/intro.rs:331
+#: src/intro.rs:338
 msgid "Keyboard shortcut"
 msgstr ""
 
-#: src/intro.rs:338 src/intro.rs:365
+#: src/intro.rs:345 src/intro.rs:372
 msgid "Super+R is already set up for Run."
 msgstr ""
 
-#: src/intro.rs:342
+#: src/intro.rs:349
 msgid "{1} currently uses Super+R."
 msgstr ""
 
-#: src/intro.rs:344
+#: src/intro.rs:351
 msgid "Super+R is free."
 msgstr ""
 
-#: src/intro.rs:348
+#: src/intro.rs:355
 msgid "Open Run with Super+R"
 msgstr ""
 
-#: src/intro.rs:352
+#: src/intro.rs:359
 msgid "Set Up"
 msgstr ""
 
-#: src/intro.rs:369
+#: src/intro.rs:376
 msgid "Could not set up the shortcut: {1}"
 msgstr ""
 
-#: src/intro.rs:379
+#: src/intro.rs:386
 msgid "Setting it up will override the shortcut that uses it now."
 msgstr ""
 
-#: src/intro.rs:398
+#: src/intro.rs:403
 msgid "Pick an appearance"
 msgstr ""
 
-#: src/intro.rs:403
+#: src/intro.rs:408
 msgid "Interface style"
 msgstr ""
 
-#: src/intro.rs:410
+#: src/intro.rs:415
 msgid "Follow the system"
 msgstr ""
 
-#: src/intro.rs:411
+#: src/intro.rs:416
 msgid "Use whatever the desktop is already set to"
 msgstr ""
 
-#: src/intro.rs:416
+#: src/intro.rs:421
 msgid "Light"
 msgstr ""
 
-#: src/intro.rs:417
+#: src/intro.rs:422
 msgid "Always use the light style"
 msgstr ""
 
-#: src/intro.rs:422
+#: src/intro.rs:427
 msgid "Dark"
 msgstr ""
 
-#: src/intro.rs:423
+#: src/intro.rs:428
 msgid "Always use the dark style"
 msgstr ""
 
-#: src/intro.rs:459
+#: src/intro.rs:469
 msgid "This changes the appearance for the whole desktop, not just Run."
 msgstr ""
 
-#: src/intro.rs:472
+#: src/intro.rs:482
 msgid "Interface language"
 msgstr ""
 
-#: src/intro.rs:477
+#: src/intro.rs:487
 msgid "How the language is chosen"
 msgstr ""
 
-#: src/intro.rs:480
+#: src/intro.rs:490
 msgid "(not set)"
 msgstr ""
 
-#: src/intro.rs:485
+#: src/intro.rs:495
 msgid "Current system language"
 msgstr ""
 
-#: src/intro.rs:487
+#: src/intro.rs:497
 msgid "Locale name"
 msgstr ""
 
-#: src/intro.rs:489
+#: src/intro.rs:499
 msgid "Looks valid."
 msgstr ""
 
-#: src/intro.rs:491
+#: src/intro.rs:501
 msgid "This is not a valid locale name, so English is used instead."
 msgstr ""
 
-#: src/intro.rs:495
+#: src/intro.rs:505
 msgid "Translation installed"
 msgstr ""
 
-#: src/intro.rs:497
+#: src/intro.rs:507
 msgid "Found at {1}"
 msgstr ""
 
-#: src/intro.rs:498
+#: src/intro.rs:508
 msgid "Not found. Run the installer to copy it."
 msgstr ""
 
-#: src/intro.rs:513
+#: src/intro.rs:523
 msgid ""
 "Run decides its language from the desktop locale. It cannot be switched "
 "inside the program."
 msgstr ""
 
-#: src/intro.rs:526
+#: src/intro.rs:536
 msgid "You are all set"
 msgstr ""
 
-#: src/intro.rs:530
+#: src/intro.rs:540
 msgid "Press Super+R to open the run dialog at any time."
 msgstr ""
 
-#: src/intro.rs:533
+#: src/intro.rs:543
 msgid "Run \"run-dialog settings\" to revisit the options."
 msgstr ""
 
-#: src/intro.rs:617
+#: src/intro.rs:627
 msgid "an unnamed shortcut"
 msgstr ""
 
-#: src/intro.rs:650
+#: src/intro.rs:660
 msgid "Show the run command prompt"
+msgstr ""
+
+#: src/help.rs:31
+msgid "Usage"
+msgstr ""
+
+#: src/help.rs:33
+msgid "Open the run dialog"
+msgstr ""
+
+#: src/help.rs:36
+msgid "Open the settings window"
+msgstr ""
+
+#: src/help.rs:39
+msgid "Run the first-time setup wizard"
+msgstr ""
+
+#: src/help.rs:42
+msgid "Show this help"
+msgstr ""
+
+#: src/help.rs:46
+msgid "How input is resolved"
+msgstr ""
+
+#: src/help.rs:48
+msgid "A web address or known URI scheme is opened by the default handler"
+msgstr ""
+
+#: src/help.rs:49
+msgid "An explicit path is launched, or opened with the default application"
+msgstr ""
+
+#: src/help.rs:50
+msgid ""
+"Otherwise the current directory, the system directories and $PATH are "
+"searched"
+msgstr ""
+
+#: src/help.rs:51
+msgid "Then desktop entries from the XDG, Flatpak and Snap databases"
+msgstr ""
+
+#: src/help.rs:52
+msgid "As a last resort the input is handed to xdg-open"
+msgstr ""
+
+#: src/help.rs:62
+msgid "Things worth knowing"
+msgstr ""
+
+#: src/help.rs:64
+msgid ""
+"Arguments are passed as an argument vector, so wildcards, pipes and "
+"variables are not expanded"
+msgstr ""
+
+#: src/help.rs:65
+msgid "Interpreters such as python or gdb open in a terminal automatically"
+msgstr ""
+
+#: src/help.rs:66
+msgid ""
+"Tick the administrator checkbox to run a program with elevated privileges"
+msgstr ""
+
+#: src/help.rs:73
+msgid "Files"
+msgstr ""
+
+#: src/help.rs:75
+msgid "Settings"
+msgstr ""
+
+#: src/help.rs:78
+msgid "Command history"
+msgstr ""
+
+#: src/help.rs:80
+msgid "Run \"man run-dialog\" for the full manual."
+msgstr ""
+
+#: src/help.rs:97
+msgid "Help"
+msgstr ""
+
+#: src/help.rs:124
+msgid "Close"
 msgstr ""

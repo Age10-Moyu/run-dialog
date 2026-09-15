@@ -30,6 +30,7 @@ PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 BIN_SRC="$PROJECT_ROOT/target/release/run-dialog"
 DESKTOP_SRC="$PROJECT_ROOT/resources/run-dialog.desktop"
 ICON_SRC="$PROJECT_ROOT/resources/icon.png"
+MAN_SRC="$PROJECT_ROOT/resources/run-dialog.1"
 LOCALE_SRC="$PROJECT_ROOT/target/release/locale"
 
 # 安装目标（XDG 规范）
@@ -38,11 +39,13 @@ BIN_DIR="$HOME/.local/bin"
 APP_DIR="$PREFIX/applications"
 LOCALE_DST="$PREFIX/locale"
 ICON_DST="$PREFIX/icons/hicolor/256x256/apps"
+MAN_DST="$PREFIX/man/man1"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/run-dialog"
 
 BIN_DST="$BIN_DIR/run-dialog"
 DESKTOP_DST="$APP_DIR/run-dialog.desktop"
 ICON_DST_FILE="$ICON_DST/run-dialog.png"
+MAN_DST_FILE="$MAN_DST/run-dialog.1"
 
 APP_TITLE="运行 安装向导"
 
@@ -101,6 +104,13 @@ install_files() {
         if [[ -f "$ICON_SRC" ]]; then
             echo "# 安装图标…"
             install -Dm644 "$ICON_SRC" "$ICON_DST_FILE"
+        fi
+
+        # man 手册：装到 ~/.local/share/man 后，man / apropos 会自动搜到
+        # （该目录在 manpath 的默认搜索范围内）
+        if [[ -f "$MAN_SRC" ]]; then
+            echo "# 安装手册…"
+            install -Dm644 "$MAN_SRC" "$MAN_DST_FILE"
         fi
 
         # 译文：这一步是「Super+R 显示英文」问题的关键。
@@ -179,7 +189,7 @@ check_path() {
 main() {
     check_prereqs
 
-    if ! confirm "即将把「运行」安装到你的用户目录：\n\n  程序：$BIN_DST\n  桌面条目：$DESKTOP_DST\n  图标：$ICON_DST_FILE\n  译文：$LOCALE_DST/\n  配置：$CONFIG_DIR/\n\n整个过程不需要管理员权限。是否继续？"; then
+    if ! confirm "即将把「运行」安装到你的用户目录：\n\n  程序：$BIN_DST\n  桌面条目：$DESKTOP_DST\n  图标：$ICON_DST_FILE\n  手册：$MAN_DST_FILE\n  译文：$LOCALE_DST/\n  配置：$CONFIG_DIR/\n\n整个过程不需要管理员权限。是否继续？"; then
         exit 0
     fi
 

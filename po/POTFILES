@@ -12,4 +12,5 @@
 src/main.rs
 src/settings.rs
 src/intro.rs
+src/help.rs
 

@@ -41,11 +41,13 @@ BIN_DIR="$HOME/.local/bin"
 APP_DIR="$PREFIX/applications"
 LOCALE_DST="$PREFIX/locale"
 ICON_DST="$PREFIX/icons/hicolor/256x256/apps"
+MAN_DST="$PREFIX/man/man1"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/run-dialog"
 
 BIN_DST="$BIN_DIR/run-dialog"
 DESKTOP_DST="$APP_DIR/run-dialog.desktop"
 ICON_DST_FILE="$ICON_DST/run-dialog.png"
+MAN_DST_FILE="$MAN_DST/run-dialog.1"
 
 # ---------------- 1. 先编译，避免删完才失败 ----------------
 
@@ -67,6 +69,7 @@ listing=""
 [[ -f "$BIN_DST" ]]       && listing="$listing  程序：$BIN_DST\n"
 [[ -f "$DESKTOP_DST" ]]   && listing="$listing  桌面条目：$DESKTOP_DST\n"
 [[ -f "$ICON_DST_FILE" ]] && listing="$listing  图标：$ICON_DST_FILE\n"
+[[ -f "$MAN_DST_FILE" ]]  && listing="$listing  手册：$MAN_DST_FILE\n"
 [[ -d "$LOCALE_DST" ]]    && listing="$listing  译文：$LOCALE_DST/\n"
 
 if [[ -z "$listing" ]]; then
@@ -79,7 +82,7 @@ fi
 
 # ---------------- 3. 删除旧文件（保留配置）----------------
 
-rm -f "$BIN_DST" "$DESKTOP_DST" "$ICON_DST_FILE" 2>/dev/null
+rm -f "$BIN_DST" "$DESKTOP_DST" "$ICON_DST_FILE" "$MAN_DST_FILE" 2>/dev/null
 rm -rf "$LOCALE_DST"/*/LC_MESSAGES/run-dialog.mo 2>/dev/null
 
 # 注意：**不删** $CONFIG_DIR —— 这正是「重装」的意义所在。

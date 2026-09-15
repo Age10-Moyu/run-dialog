@@ -43,6 +43,8 @@ assets = [
     ["resources/run-dialog.desktop", "usr/share/applications/", "644"],
     # 应用图标（.desktop 的 Icon=run-dialog 指向它）
     ["resources/icon.png", "usr/share/icons/hicolor/256x256/apps/run-dialog.png", "644"],
+    # man 手册（让 apropos / man 能搜到）
+    ["resources/run-dialog.1", "usr/share/man/man1/run-dialog.1", "644"],
     # gettext 译文（build.rs 生成于 target/release/locale/<lang>/LC_MESSAGES/）
     # 注意：cargo-deb 的 assets 不支持通配符展开，新增语言时必须在此登记
     ["target/release/locale/zh_CN/LC_MESSAGES/run-dialog.mo", "usr/share/locale/zh_CN/LC_MESSAGES/", "644"],

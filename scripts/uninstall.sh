@@ -12,11 +12,13 @@ BIN_DIR="$HOME/.local/bin"
 APP_DIR="$PREFIX/applications"
 LOCALE_DST="$PREFIX/locale"
 ICON_DST="$PREFIX/icons/hicolor/256x256/apps"
+MAN_DST="$PREFIX/man/man1"
 CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/run-dialog"
 
 BIN_DST="$BIN_DIR/run-dialog"
 DESKTOP_DST="$APP_DIR/run-dialog.desktop"
 ICON_DST_FILE="$ICON_DST/run-dialog.png"
+MAN_DST_FILE="$MAN_DST/run-dialog.1"
 
 APP_TITLE="运行 卸载"
 
@@ -58,6 +60,7 @@ main() {
     [[ -f "$BIN_DST" ]]       && found+=("程序:      $BIN_DST")
     [[ -f "$DESKTOP_DST" ]]   && found+=("桌面条目:  $DESKTOP_DST")
     [[ -f "$ICON_DST_FILE" ]] && found+=("图标:      $ICON_DST_FILE")
+    [[ -f "$MAN_DST_FILE" ]]  && found+=("手册:      $MAN_DST_FILE")
     [[ -d "$LOCALE_DST" ]]    && found+=("译文:      $LOCALE_DST/*/LC_MESSAGES/run-dialog.mo")
     [[ -d "$CONFIG_DIR" ]]    && found+=("配置:      $CONFIG_DIR/")
 
@@ -81,7 +84,7 @@ main() {
     fi
 
     # 执行删除
-    rm -f "$BIN_DST" "$DESKTOP_DST" "$ICON_DST_FILE"
+    rm -f "$BIN_DST" "$DESKTOP_DST" "$ICON_DST_FILE" "$MAN_DST_FILE"
     rm -rf "$LOCALE_DST"/*/LC_MESSAGES/run-dialog.mo 2>/dev/null
     if (( remove_config == 1 )); then
         rm -rf "$CONFIG_DIR"

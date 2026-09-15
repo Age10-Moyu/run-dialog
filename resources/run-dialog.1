@@ -1,0 +1,218 @@
+.\" run-dialog 的 man 手册
+.\"
+.\" 说明：本文件用 groff 语法。改动后可用以下命令预览：
+.\"     man ./resources/run-dialog.1
+.\"
+.TH RUN-DIALOG 1 "2026-09-16" "run-dialog 0.1.0" "用户命令"
+.\" 中文段落行末没有可断行的空格，groff 无法把行填满，
+.\" 因此 `man --warnings` 会报若干 "cannot adjust line"。
+.\" 这是 groff 处理 CJK 的固有限制，不影响阅读，lintian 也不检查。
+.\" 全文改用左对齐（.ad l）至少能避免把文字强行拉开。
+.ad l
+.SH 名称
+run-dialog \- 仿 Windows「运行」窗口的命令启动器
+.SH 概要
+.B run-dialog
+.RI [ 子命令 ]
+.br
+.B run-dialog
+.B help
+.RB [ \-\-gui ]
+.br
+.B run-dialog
+.B intro
+.br
+.B run-dialog
+.B settings
+.SH 描述
+.B run-dialog
+是一个 GTK4 / libadwaita 编写的「运行」对话框，在 Linux 上尽量还原 Windows 的
+运行窗口。输入命令、路径或网址后回车即可执行，无需打开终端。
+.PP
+不带参数运行时，程序打开输入框；输入内容按下表逐级匹配。
+.SH 输入解析
+解析顺序固定，命中即停：
+.IP "1." 4
+.B 网址 / 已知协议
+\(em 仅白名单协议（http、https、mailto、ftp、ssh、file 等）交给默认处理器。
+.br
+刻意采用白名单而非
+.RI \(lqa:b\(rq
+模糊匹配，否则
+.B C:\\
+这类 Windows 路径会被误判成协议。
+.IP "2." 4
+.B 显式路径
+\(em 以
+.BR / 、 ~ 、 ./ 、 ../
+开头，或路径中含
+.BR / 。
+可执行文件直接启动；目录与非可执行文件交给默认程序。
+.IP "3." 4
+.B 当前目录
+.IP "4." 4
+.B 系统目录
+\(em
+.BR /usr/local/bin 、 /usr/bin 、 /bin 、 /usr/local/sbin 、 /usr/sbin 、 /sbin 。
+.IP "5." 4
+.B $PATH
+.IP "6." 4
+.B 桌面应用数据库
+\(em 查找 XDG、Flatpak、Snap 三处的
+.B .desktop
+条目，按名称与关键词匹配。
+.IP "7." 4
+.B 兜底
+\(em 交给
+.BR xdg-open ；
+仍失败则提示找不到。
+.SH 命令
+.TP
+.B help
+打印帮助信息到标准输出后退出。
+.br
+加
+.B \-\-gui
+则改用图形对话框显示。
+.TP
+.B intro
+打开首次运行向导（7 页）：欢迎、功能简介、偏好选项、快捷键、外观、语言、完成。
+.br
+会写入配置并可能修改 GNOME 的 Super+R 快捷键与外观设置。
+.TP
+.B settings
+打开设置窗口，可修改实验性选项、行为偏好，以及恢复默认设置。
+.SH 行为
+.SS 不经过 shell
+所有命令都以参数数组（argv）形式直接启动，
+.B 绝不拼接 shell 命令
+。因此通配符、管道、重定向、变量展开都不会被解释：
+.PP
+.nf
+.RS
+ls *.txt      参数为字面量 "*.txt"，不做 glob
+ls | wc       参数为 "|" 和 "wc"
+echo $HOME    参数为字面量 "$HOME"
+.RE
+.fi
+.PP
+这是刻意设计：避免注入风险，也让行为可预期。需要 shell 特性时，请在输入里显式调用
+.BR "bash \-c" \(dq...\(dq 。
+.SS 终端检测
+交互式程序会自动在终端模拟器里运行。满足任一条件即视为需要终端：
+.IP \(bu 2
+对应的
+.B .desktop
+条目设置了
+.BR Terminal=true ；
+.IP \(bu 2
+脚本的 shebang 指向交互式解释器；
+.IP \(bu 2
+程序名在交互式解释器清单中（python、node、gdb、sqlite3 等，含版本号归一化，
+如
+.B python3.12
+按
+.B python3
+判断）。
+.PP
+.B ls、cat、grep
+这类命令
+.B 不会
+被包进终端 \(em 它们一闪而过，与 Windows 的
+.B dir
+行为一致。
+.SS 提权运行
+输入框的「以系统管理员权限创建此任务」勾选后，会弹出仿 Windows UAC 的对话框索取密码，
+再通过
+.BR sudo
+的 askpass 机制提权执行。若当前用户本身已是管理员，用户名会预填自己；若程序已以 root
+运行，则改为显示盾牌图标，不再索要密码。
+.PP
+密码仅写入权限为 0600 的临时文件，用完立即零覆写并删除。
+.SH 文件
+.TP
+.I ~/.config/run-dialog/config.ini
+配置文件。首次运行或使用
+.B intro
+后生成。
+.TP
+.I ~/.config/run-dialog/history
+命令历史，最多保留 100 条，重复的连续命令自动去重。
+.TP
+.I ~/.local/share/locale/\(**/LC_MESSAGES/run-dialog.mo
+用户级安装的译文。系统级安装在
+.IR /usr/share/locale/ 。
+.SH 环境变量
+.TP
+.B RUN_DIALOG_LOCALEDIR
+指定译文（
+.B .mo
+）的查找目录，优先级高于其他位置。
+.TP
+.B LANG
+决定界面语言。
+.B 必须带编码后缀
+（如
+.BR zh_CN.UTF\-8 ）；
+写成
+.B zh_CN
+不是合法 locale 名，GTK 会回退到英文。
+.TP
+.B HOME
+用于定位配置与数据目录。
+.SH 示例
+启动运行对话框：
+.PP
+.nf
+.RS
+run-dialog
+.RE
+.fi
+.PP
+打开设置：
+.PP
+.nf
+.RS
+run-dialog settings
+.RE
+.fi
+.PP
+首次配置（注册快捷键、选外观、检查语言）：
+.PP
+.nf
+.RS
+run-dialog intro
+.RE
+.fi
+.PP
+查看帮助：
+.PP
+.nf
+.RS
+run-dialog help
+run-dialog help \-\-gui
+.RE
+.fi
+.SH 退出状态
+.B 0
+表示程序正常结束。
+.PP
+注意：输入解析失败
+.B 不会
+改变退出码 \(em 只在界面上提示「找不到」。程序恒以
+.B 0
+退出。
+.SH 参见
+.BR xdg-open (1),
+.BR gtk-launch (1),
+.BR desktop-file-validate (1)
+.PP
+项目主页：
+.IR https://github.com/Age10\-Moyu/run\-dialog
+.SH 作者
+Age10_Moyu <yx_zyz20120418@163.com>
+.br
+本手册由 DeepSeek 编写。
+.SH 许可
+GPL\-3.0\-or\-later。详见发行包中的
+.IR /usr/share/doc/run-dialog/copyright 。

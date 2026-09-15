@@ -12,6 +12,7 @@ use std::sync::OnceLock;
 
 mod desktop;
 mod elevate;
+mod help;
 mod i18n;
 mod intro;
 mod launcher;
@@ -471,6 +472,18 @@ fn main() -> gtk::glib::ExitCode {
         // 只手动触发——用户可能只想让程序安静地跑起来，突然弹窗会显得冒犯。
         let intro_mode = args.iter().any(|a| a == "intro");
 
+        // 帮助：`run-dialog help` 打印到 stdout，加 `--gui` 则弹对话框。
+        //
+        // 终端模式必须在创建 GTK Application 之前返回：
+        // 否则会先初始化图形栈，在无显示器的环境（如 ssh）里直接失败。
+        // GUI 模式则相反，需要 app 才能建窗口，所以分两路。
+        let help_mode = args.iter().any(|a| a == "help" || a == "--help" || a == "-h");
+        let help_gui = args.iter().any(|a| a == "--gui");
+        if help_mode && !help_gui {
+            help::print_help();
+            return gtk::glib::ExitCode::SUCCESS;
+        }
+
         // askpass 模式：由 `sudo -A` 调用，从临时文件读出密码写到 stdout。
         // 必须在创建 GTK Application 之前返回——sudo 只关心 stdout。
         if args.iter().any(|a| a == "--askpass") {
@@ -519,7 +532,9 @@ fn main() -> gtk::glib::ExitCode {
         });
 
         app.connect_activate(move |app| {
-            if intro_mode {
+            if help_mode {
+                help::show_help_dialog(app);
+            } else if intro_mode {
                 intro::build_intro_window(app);
             } else if settings_mode {
                 settings::build_settings_window(app);
