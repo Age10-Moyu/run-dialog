@@ -34,7 +34,11 @@ const MEDIA_KEYS_SCHEMA: &str = "org.gnome.settings-daemon.plugins.media-keys";
 const CUSTOM_SCHEMA_PREFIX: &str =
     "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:";
 
-/// 界面外观的三种取值（对应 gsettings 的 color-scheme）。
+/// 外观页的三个选项。
+///
+/// 注意与 `adw::ColorScheme` 的区别：libadwaita 还有 `ForceLight` / `ForceDark`，
+/// 那两个会**覆盖**应用的明暗选择；这里只用「跟随系统 / 偏好浅色 / 偏好深色」三种，
+/// 与 GNOME 设置面板里的选项一致。
 #[derive(Clone, Copy, PartialEq, Eq)]
 enum ColorScheme {
     Default,
@@ -43,20 +47,23 @@ enum ColorScheme {
 }
 
 impl ColorScheme {
-    fn gsettings_value(self) -> &'static str {
-        match self {
-            Self::Default => "default",
-            Self::Light => "prefer-light",
-            Self::Dark => "prefer-dark",
+    /// 读当前值 —— 从 `StyleManager` 读，而不是读 dconf。
+    ///
+    /// 两者在正常情况下一一致，但 `StyleManager` 反映的是**实际生效**的方案，
+    /// 而 dconf 里可能是别的值（例如被环境变量覆盖时）。
+    fn current() -> Self {
+        match adw::StyleManager::default().color_scheme() {
+            adw::ColorScheme::PreferLight => Self::Light,
+            adw::ColorScheme::PreferDark => Self::Dark,
+            _ => Self::Default,
         }
     }
 
-    /// 从 gsettings 的当前值反推，用于初始化单选状态。
-    fn from_gsettings(s: &str) -> Self {
-        match s.trim_matches('\'') {
-            "prefer-light" => Self::Light,
-            "prefer-dark" => Self::Dark,
-            _ => Self::Default,
+    fn to_adw(&self) -> adw::ColorScheme {
+        match self {
+            Self::Default => adw::ColorScheme::Default,
+            Self::Light => adw::ColorScheme::PreferLight,
+            Self::Dark => adw::ColorScheme::PreferDark,
         }
     }
 }
@@ -388,9 +395,7 @@ fn build_shortcut_page() -> gtk::Widget {
 // ============================================================
 
 fn build_appearance_page() -> gtk::Widget {
-    let current = gsettings_get("org.gnome.desktop.interface", "color-scheme")
-        .unwrap_or_else(|| "default".to_string());
-    let active = ColorScheme::from_gsettings(&current);
+    let active = ColorScheme::current();
 
     let b = page_box(18);
     b.append(&page_heading(
@@ -443,11 +448,16 @@ fn build_appearance_page() -> gtk::Widget {
 
         check.connect_toggled(move |c| {
             if c.is_active() {
-                let _ = gsettings_set(
-                    "org.gnome.desktop.interface",
-                    "color-scheme",
-                    scheme.gsettings_value(),
-                );
+                // 必须走 libadwaita 的 StyleManager，**不能**直接 `gsettings set`。
+                //
+                // 直接写 dconf 会让 GTK 异步重载主题；若主题资源加载失败
+                // （例如 Yaru-dark 的 GResource 缺失），CSS provider 会损坏，
+                // 后果是窗口背景连同标题栏一起变成全透明，且切回去也修不好，
+                // 只能重启程序。
+                //
+                // StyleManager 走的是 libadwaita 的样式栈，会优雅地重建
+                // CSS，不依赖系统主题资源是否完好。
+                adw::StyleManager::default().set_color_scheme(scheme.to_adw());
             }
         });
 
