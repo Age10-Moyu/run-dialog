@@ -7,8 +7,8 @@
 #     ./scripts/ostd.sh
 #
 # 实际工作分派给：
-#   - 项目根的 ./build.sh         编译（release）
-#   - 同目录的 ./install          图形化安装向导
+#   - 同目录的 ./build.sh        编译（release）
+#   - 同目录的 ./install         图形化安装向导
 #
 # 若你只想重新安装（已编译过），可直接运行 ./scripts/install。
 
@@ -45,8 +45,8 @@ fi
 # ---------------- 2. 编译 ----------------
 
 printf '正在编译…\n' >&2
-if ! ./build.sh; then
-    err "编译失败。\n\n请手动运行 ./build.sh 查看完整错误信息。"
+if ! "$SCRIPT_DIR/build.sh"; then
+    err "编译失败。\n\n请手动运行 ./scripts/build.sh 查看完整错误信息。"
     exit 1
 fi
 
