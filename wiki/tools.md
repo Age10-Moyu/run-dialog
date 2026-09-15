@@ -14,6 +14,7 @@
 | `clear.sh` | 清空构建产物（**破坏性**） | — |
 | `deb.sh` | 打包为 `.deb` | `cargo-deb` |
 | `install.sh` | 图形化安装向导（用户级） | zenity |
+| `reinstall.sh` | 重新安装（保留配置） | zenity |
 | `uninstall.sh` | 图形化卸载 | zenity |
 | `ostd.sh` | 一键：编译 + 安装 | 上述全部 |
 | `push.sh` | 提交并推送（自动处理 WARP） | git、可选 `warp-cli` |
@@ -68,25 +69,32 @@ fi
 
 ---
 
-## install.sh / ostd.sh / uninstall.sh
+## install.sh / ostd.sh / reinstall.sh / uninstall.sh
 
 ```bash
 ./scripts/install.sh      # 只安装（假设已编译）
 ./scripts/ostd.sh         # 一键：检查工具链 → 编译 → 调用 install.sh
-./scripts/uninstall.sh    # 卸载
+./scripts/reinstall.sh    # 重装：删旧文件（保留配置）→ 调 install.sh
+./scripts/uninstall.sh    # 卸载（可选保留配置）
 ```
 
-**三者关系**：
+**四者关系**：
 
 ```
 ostd.sh
  ├─ 检查 cargo / msgfmt
  ├─ 调用 build.sh
  └─ exec install.sh   ← 装上后交给向导
+
+reinstall.sh
+ ├─ 确保已编译（否则先调 build.sh）
+ ├─ 删旧文件（**不删配置**）
+ └─ exec install.sh
 ```
 
 `ostd.sh` 存在的意义是「一条命令从零到能用」。若已编译过只想重装，
-直接用 `install.sh`。
+用 `reinstall.sh` 比「先 uninstall 再 install」省事 —— **只问一次**，
+而且不会丢掉偏好设置。
 
 **安装位置**（全部在 `~/.local`，不需要 root）：
 
@@ -108,6 +116,14 @@ ostd.sh
 > `run-dialog intro` 的职责，见下节。
 
 `uninstall.sh` 会先列出将要删除的文件，再单独询问是否保留配置与命令历史。
+
+### reinstall.sh 的注意点
+
+顺序是**先确认编译产物、再删旧文件** —— 否则编译失败时用户会落得
+「旧的删了、新的没装上」的尴尬境地。
+
+它**不删** `~/.config/run-dialog/`（这正是「重装」与「卸载」的区别），
+也不动 Super+R 快捷键（`install.sh` 的注册是幂等的，已存在就跳过）。
 
 ---
 

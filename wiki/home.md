@@ -62,6 +62,7 @@ resources/         图标与 .desktop 模板
 cargo test --release            # 139 项测试
 ./scripts/deb.sh                # 打 deb 包
 ./scripts/install.sh            # 安装到 ~/.local（图形向导）
+./scripts/reinstall.sh          # 重装（保留配置）
 ./scripts/ostd.sh               # 一键：编译 + 安装
 ./scripts/push.sh "说明"         # 提交并推送（自动处理 WARP）
 ```
