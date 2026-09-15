@@ -3,7 +3,7 @@
 # run-dialog 安装向导
 #
 # 本脚本位于 <项目根>/scripts/，请从任意位置调用：
-#     ./scripts/install
+#     ./scripts/install.sh
 #
 # 用 zenity 逐步引导用户完成：
 #   1. 安装文件（二进制 / 译文 / .desktop）到 ~/.local
