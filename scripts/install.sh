@@ -5,10 +5,13 @@
 # 本脚本位于 <项目根>/scripts/，请从任意位置调用：
 #     ./scripts/install.sh
 #
-# 用 zenity 逐步引导用户完成：
-#   1. 安装文件（二进制 / 译文 / .desktop）到 ~/.local
-#   2. 可选：注册 Super+R 快捷键
-#   3. 可选：设置深色模式偏好
+# 只负责「把文件装到位」：
+#   1. 安装文件（二进制 / 译文 / .desktop / 图标）到 ~/.local
+#   2. 检查 ~/.local/bin 是否在 PATH 中
+#   3. 询问是否运行 `run-dialog intro`（偏好设置交给程序内的引导向导）
+#
+# 分工说明：快捷键、外观、语言等偏好设置统一由 `run-dialog intro` 负责，
+# 不在 shell 里重复实现——否则同一套逻辑要在两个地方各维护一遍。
 #
 # 设计要点：
 # - **用户级安装**：全部写到 ~/.local，不需要 root
@@ -172,146 +175,6 @@ check_path() {
     fi
 }
 
-# ---------------- 步骤 3：快捷键 ----------------
-
-KEYBINDING_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/run-dialog/"
-SCHEMA="org.gnome.settings-daemon.plugins.media-keys"
-CUSTOM_SCHEMA="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$KEYBINDING_PATH"
-
-# 取当前所有自定义快捷键路径（gsettings 返回形如 ['/a/', '/b/']）
-current_bindings() {
-    gsettings get "$SCHEMA" custom-keybindings 2>/dev/null
-}
-
-# 我们已经注册过？
-own_binding_registered() {
-    current_bindings | grep -qF "$KEYBINDING_PATH"
-}
-
-# 查找 Super+R 是否被别的自定义快捷键占用
-# 返回占用者的描述（空表示未占用）
-super_r_taken_by() {
-    local list
-    list="$(current_bindings | tr -d "[]',")"
-    local p
-    for p in $list; do
-        [[ -z "$p" ]] && continue
-        [[ "$p" == "$KEYBINDING_PATH" ]] && continue
-
-        local binding_schema="org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$p"
-        local binding
-        binding="$(gsettings get "$binding_schema" binding 2>/dev/null | tr -d "'")"
-        if [[ "$binding" == "<Super>r" || "$binding" == "<Super>R" ]]; then
-            local name
-            name="$(gsettings get "$binding_schema" name 2>/dev/null | tr -d "'")"
-            echo "${name:-未命名}"
-            return 0
-        fi
-    done
-    return 1
-}
-
-register_shortcut() {
-    local taken
-    if taken="$(super_r_taken_by)"; then
-        if ! confirm "Super+R 已被快捷键「$taken」占用。\n\n继续注册会与它冲突（后注册的生效，行为不确定）。\n\n仍要注册吗？"; then
-            return 1
-        fi
-    fi
-
-    # 确保我们的路径在列表中（gsettings 要求完整的列表，不能只 append 一项）
-    local list
-    list="$(current_bindings | tr -d "[]'")"
-
-    local new_list
-    if own_binding_registered; then
-        new_list="$list"
-    elif [[ -z "${list//,}" ]]; then
-        new_list="$KEYBINDING_PATH"
-    else
-        new_list="${list},${KEYBINDING_PATH}"
-    fi
-
-    gsettings set "$SCHEMA" custom-keybindings "[${new_list}]" 2>/dev/null || {
-        err "写入快捷键列表失败。"
-        return 1
-    }
-
-    gsettings set "$CUSTOM_SCHEMA" name '显示运行命令提示符' 2>/dev/null
-    gsettings set "$CUSTOM_SCHEMA" command "$BIN_DST" 2>/dev/null
-    gsettings set "$CUSTOM_SCHEMA" binding '<Super>r' 2>/dev/null
-
-    return 0
-}
-
-ask_shortcut() {
-    if ! confirm "是否注册 Super+R 来打开「运行」对话框？\n\n点击「继续」注册，点击「取消」跳过。"; then
-        return 0
-    fi
-
-    if register_shortcut; then
-        info "已注册 Super+R。\n\n按下 Super+R 即可打开运行对话框。"
-    fi
-}
-
-# ---------------- 步骤 4：外观偏好 ----------------
-
-ask_appearance() {
-    local current
-    current="$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | tr -d "'")"
-
-    local choice
-    choice="$(zenity --list --title="$APP_TITLE" --width=420 --height=260 \
-                     --text="选择界面外观\n\n（当前：${current:-未设置}）" \
-                     --radiolist --column="" --column="选项" \
-                     TRUE  "跟随系统（推荐）" \
-                     FALSE "浅色" \
-                     FALSE "深色" \
-                     --ok-label="应用" --cancel-label="跳过" 2>/dev/null)" || return 0
-
-    case "$choice" in
-        "浅色")   gsettings set org.gnome.desktop.interface color-scheme 'prefer-light' ;;
-        "深色")   gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark' ;;
-        "跟随系统") gsettings set org.gnome.desktop.interface color-scheme 'default' ;;
-    esac
-
-    return 0
-}
-
-# ---------------- 步骤 5：语言偏好 ----------------
-
-ask_language() {
-    # 说明现状，让用户知道为什么之前显示英文
-    local lang_env="${LANG:-未设置}"
-    local mo_path="$LOCALE_DST/zh_CN/LC_MESSAGES/run-dialog.mo"
-    local mo_status
-    if [[ -f "$mo_path" ]]; then
-        mo_status="已安装"
-    else
-        mo_status="未安装"
-    fi
-
-    zenity --info --title="$APP_TITLE" --width=460 --text="语言设置说明
-
-当前系统语言：$lang_env
-中文译文：$mo_status
-
-程序界面语言由系统区域设置决定，无法在程序内单独切换。
-若界面显示英文，请检查：
-
-  1. 系统语言是否为中文
-     （设置 → 区域与语言）
-
-  2. LANG 是否为 zh_CN.UTF-8（注意不能写成 zh_CN，
-     后者不是合法的 locale 名，会回退到英文）
-
-  3. 译文是否已安装到
-     $LOCALE_DST/zh_CN/LC_MESSAGES/
-
-本向导已自动完成第 3 步。" 2>/dev/null
-}
-
-# ---------------- 主流程 ----------------
 
 main() {
     check_prereqs
@@ -325,13 +188,14 @@ main() {
     fi
 
     check_path
-    ask_shortcut
-    ask_appearance
-    ask_language
 
-    # 收尾：直接问用户要不要现在试一下
-    if confirm "安装完成！\n\n程序位置：$BIN_DST\n\n是否现在启动一次，确认界面语言与显示正常？"; then
-        setsid "$BIN_DST" >/dev/null 2>&1 &
+    # 偏好设置（快捷键、外观、语言等）统一交给程序内的引导向导，
+    # 避免在 shell 与 Rust 两侧各维护一套相同的逻辑。
+    if confirm "文件已就位。\n\n是否现在运行引导向导，设置快捷键、外观与语言？\n\n（之后也可随时输入 run-dialog intro 重新打开）"; then
+        # intro 会自己 present 窗口，这里不等待它退出
+        setsid "$BIN_DST" intro >/dev/null 2>&1 &
+    else
+        info "安装完成。\n\n程序位置：$BIN_DST"
     fi
 }
 

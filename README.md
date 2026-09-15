@@ -27,7 +27,7 @@ Technology has no borders, but language does. Sorry qwq
 
 ## [¶](#简体中文版本)简体中文版本
 
-此版本由我自己编写。
+此版本由我自己编写。~~但不知为何，AI 老是掺和进来。~~
 
 ### [¶](#适用平台)适用平台
 
@@ -63,11 +63,25 @@ rustflags = ["-C", "link-arg=-fuse-ld=mold"]   # 快速链接
 
 不处理而直接构建会报错，提示找不到 `sccache` 或 `mold`。
 
+### [¶](#自编译)自编译
+
+如果您对本仓库的默认配置不是很满意，或有更好的想法但不至于提交 PR，那么自编译将会是一个不错的选择。
+
+根据 Wiki 页面完成程序的修改（您可能不需要改动原有程序）后，使用 `cargo build` 进行编译，并在编译完成后按照[下一章](#如何运行)进行运行。
+
+如果需要，可以按照以下步骤构建 Debian 软件包：
+``` bash
+cargo install cargo-deb   # 安装 cargo-deb 工具（仅首次需要）
+cargo deb                 # 构建，产物在 target/debian/
+```
+也可以直接用仓库里的脚本：`./scripts/deb.sh`。
+
 ### [¶](#如何运行)如何运行
 
 0. 要运行 run-dialog，您必须配置了诸如 Wayland、Xorg、Xfce 等的窗口协议及 GNOME、KDE Plasma 等的桌面环境。
 1. 运行 `scripts/build.sh` 后手动运行 `target/release/run-dialog`，或
-2. ostd 或 apt 安装好（需要配置 PPA 源，方法参见[上一章节](#如何安装)）后直接在终端输入 `run-dialog`。
+2. ostd 或 apt 安装好（需要配置 PPA 源，方法参见[上一章节](#如何安装)）后直接在终端输入 `run-dialog`，或
+3. [自编译](#自编译)完成后按照指示运行。
 
 另附：在 Windows 环境下，运行程序将会导致原生运行窗口被拉起；未在 macOS 环境下测试过。
 
@@ -142,6 +156,23 @@ rustflags = ["-C", "link-arg=-fuse-ld=mold"]   # fast linking
 - delete the `.cargo/` directory — Cargo will fall back to the default toolchain.
 
 Building without doing either will fail with an error about a missing `sccache` or `mold`.
+
+### [¶](#building-from-source)Building from source
+
+If you are not entirely happy with the defaults shipped by this repository, or you
+have a better idea but not enough of one to send a pull request, building from
+source is a good way to go.
+
+Make your changes following the Wiki pages (you may not even need to touch the
+existing code), then build with `cargo build` and run it as described in the
+[next chapter](#running).
+
+If you need one, a Debian package can be built like this:
+``` bash
+cargo install cargo-deb   # install the cargo-deb tool (first time only)
+cargo deb                 # build; output goes to target/debian/
+```
+You can also just use the script in this repository: `./scripts/deb.sh`.
 
 ### [¶](#running)Running
 

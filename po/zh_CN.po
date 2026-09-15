@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: run-dialog 0.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 22:43+0800\n"
+"POT-Creation-Date: 2026-09-15 23:00+0800\n"
 "PO-Revision-Date: 2026-09-13 09:12+0800\n"
 "Last-Translator: Age10 Moyu\n"
 "Language-Team: Chinese (Simplified)\n"
@@ -205,16 +205,16 @@ msgid ""
 "default, experimental only."
 msgstr "模拟 Windows 运行框的路径与命令翻译。默认关闭，仅供实验。"
 
-#: src/settings.rs:65 src/intro.rs:170
+#: src/settings.rs:65 src/intro.rs:292
 msgid "Enable Windows path translation"
 msgstr "启用 Windows 路径翻译"
 
-#: src/settings.rs:67 src/intro.rs:172
+#: src/settings.rs:67 src/intro.rs:294
 msgid ""
 "Map C:\\ paths to their Linux counterparts and translate common .exe names"
 msgstr "把 C:\\ 路径映射到 Linux 对应位置，并翻译常见 .exe"
 
-#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:242
+#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:550
 msgid "Failed to save settings: {1}"
 msgstr "保存配置失败：{1}"
 
@@ -222,11 +222,11 @@ msgstr "保存配置失败：{1}"
 msgid "Behavior"
 msgstr "行为"
 
-#: src/settings.rs:91 src/intro.rs:181
+#: src/settings.rs:91 src/intro.rs:302
 msgid "Choose when several apps match"
 msgstr "多个应用匹配时弹出选择"
 
-#: src/settings.rs:93 src/intro.rs:183
+#: src/settings.rs:93 src/intro.rs:304
 msgid "Show a list to pick from instead of launching the first match"
 msgstr "列出所有匹配项让用户选择，而不是直接启动第一个"
 
@@ -260,51 +260,229 @@ msgstr "GNOME 风格的运行对话框"
 msgid "Application ID"
 msgstr "应用 ID"
 
-#: src/intro.rs:21 src/intro.rs:129
+#: src/intro.rs:67 src/intro.rs:213
 msgid "Welcome to Run"
 msgstr "欢迎使用「运行」"
 
-#: src/intro.rs:47
+#: src/intro.rs:96
 msgid "Back"
 msgstr "上一步"
 
-#: src/intro.rs:48 src/intro.rs:79
+#: src/intro.rs:97 src/intro.rs:127
 msgid "Next"
 msgstr "下一步"
 
-#: src/intro.rs:77
+#: src/intro.rs:125
 msgid "Done"
 msgstr "完成"
 
-#: src/intro.rs:134
+#: src/intro.rs:217
 msgid "Type a command, a path or a web address, then press Enter."
 msgstr "输入命令、路径或网址，然后按回车。"
 
-#: src/intro.rs:142
+#: src/intro.rs:220
 msgid ""
-"The next page covers a couple of options. You can change them later in "
-"Settings."
-msgstr "下一页是几个可选设置项，之后随时可以在设置里修改。"
+"The next few pages cover the shortcuts, appearance and a couple of options."
+msgstr "接下来几页会介绍快捷键、外观，以及几个可选项。"
 
-#: src/intro.rs:161
+#: src/intro.rs:233
+msgid "Why use this instead?"
+msgstr "为什么选择它？"
+
+#: src/intro.rs:238
+msgid "Compared with the GNOME run dialog"
+msgstr "与 GNOME 自带运行窗口的对比"
+
+#: src/intro.rs:246
+msgid "Finds commands, files, folders and apps in one box"
+msgstr "一个输入框就能找命令、文件、文件夹和应用"
+
+#: src/intro.rs:247
+msgid ""
+"A single lookup order covers executables, paths, desktop entries and URLs, "
+"so you never have to think about which one you are typing."
+msgstr "统一的查找顺序覆盖可执行文件、路径、桌面条目与网址，不必先想清楚自己输入的是哪一类。"
+
+#: src/intro.rs:250
+msgid "Never goes through a shell"
+msgstr "绝不经过 shell"
+
+#: src/intro.rs:251
+msgid ""
+"Arguments are passed as an argument vector, so wildcards, pipes and "
+"variables are not silently expanded. This avoids injection surprises."
+msgstr "参数以数组形式直接传递，通配符、管道与变量不会被悄悄展开，避免注入带来的意外。"
+
+#: src/intro.rs:254
+msgid "Opens a terminal only when the program needs one"
+msgstr "仅在程序确实需要时才开终端"
+
+#: src/intro.rs:255
+msgid ""
+"Interpreters such as python or gdb are detected and wrapped in a terminal "
+"automatically; ls or cat are left alone."
+msgstr "python、gdb 这类解释器会被识别并自动包进终端；ls、cat 则保持原样。"
+
+#: src/intro.rs:258
+msgid "Runs programs as administrator, UAC style"
+msgstr "以管理员身份运行程序，仿 Windows UAC"
+
+#: src/intro.rs:259
+msgid ""
+"A consent dialog collects your password and hands it to sudo's askpass "
+"helper. The password is wiped from memory as soon as it is used."
+msgstr "仿 UAC 对话框收集密码后交给 sudo 的 askpass 助手，密码用毕立即从内存中擦除。"
+
+#: src/intro.rs:285
 msgid "Choose your preferences"
 msgstr "选择你的偏好"
 
-#: src/intro.rs:192
+#: src/intro.rs:313
 msgid "Both options are off by default, matching the Windows Run box."
 msgstr "两项默认都是关闭的，与 Windows 的「运行」窗口一致。"
 
-#: src/intro.rs:213
+#: src/intro.rs:326
+msgid "Set up a shortcut"
+msgstr "设置快捷键"
+
+#: src/intro.rs:331
+msgid "Keyboard shortcut"
+msgstr "键盘快捷键"
+
+#: src/intro.rs:338 src/intro.rs:365
+msgid "Super+R is already set up for Run."
+msgstr "Super+R 已注册给「运行」。"
+
+#: src/intro.rs:342
+msgid "{1} currently uses Super+R."
+msgstr "「{1}」当前占用了 Super+R。"
+
+#: src/intro.rs:344
+msgid "Super+R is free."
+msgstr "Super+R 当前空闲。"
+
+#: src/intro.rs:348
+msgid "Open Run with Super+R"
+msgstr "用 Super+R 打开「运行」"
+
+#: src/intro.rs:352
+msgid "Set Up"
+msgstr "注册"
+
+#: src/intro.rs:369
+msgid "Could not set up the shortcut: {1}"
+msgstr "注册快捷键失败：{1}"
+
+#: src/intro.rs:379
+msgid "Setting it up will override the shortcut that uses it now."
+msgstr "注册后会覆盖目前占用它的那个快捷键。"
+
+#: src/intro.rs:398
+msgid "Pick an appearance"
+msgstr "选择外观"
+
+#: src/intro.rs:403
+msgid "Interface style"
+msgstr "界面风格"
+
+#: src/intro.rs:410
+msgid "Follow the system"
+msgstr "跟随系统"
+
+#: src/intro.rs:411
+msgid "Use whatever the desktop is already set to"
+msgstr "沿用桌面当前的设置"
+
+#: src/intro.rs:416
+msgid "Light"
+msgstr "浅色"
+
+#: src/intro.rs:417
+msgid "Always use the light style"
+msgstr "始终使用浅色风格"
+
+#: src/intro.rs:422
+msgid "Dark"
+msgstr "深色"
+
+#: src/intro.rs:423
+msgid "Always use the dark style"
+msgstr "始终使用深色风格"
+
+#: src/intro.rs:459
+msgid "This changes the appearance for the whole desktop, not just Run."
+msgstr "这会改变整个桌面的外观，而不只是「运行」。"
+
+#: src/intro.rs:472
+msgid "Interface language"
+msgstr "界面语言"
+
+#: src/intro.rs:477
+msgid "How the language is chosen"
+msgstr "语言是如何决定的"
+
+#: src/intro.rs:480
+msgid "(not set)"
+msgstr "（未设置）"
+
+#: src/intro.rs:485
+msgid "Current system language"
+msgstr "当前系统语言"
+
+#: src/intro.rs:487
+msgid "Locale name"
+msgstr "区域名"
+
+#: src/intro.rs:489
+msgid "Looks valid."
+msgstr "看起来合法。"
+
+#: src/intro.rs:491
+msgid "This is not a valid locale name, so English is used instead."
+msgstr "这不是合法的 locale 名称，因此界面会退回英文。"
+
+#: src/intro.rs:495
+msgid "Translation installed"
+msgstr "译文安装状态"
+
+#: src/intro.rs:497
+msgid "Found at {1}"
+msgstr "位于 {1}"
+
+#: src/intro.rs:498
+msgid "Not found. Run the installer to copy it."
+msgstr "未找到。请运行安装脚本以复制译文。"
+
+#: src/intro.rs:513
+msgid ""
+"Run decides its language from the desktop locale. It cannot be switched "
+"inside the program."
+msgstr "「运行」的语言由桌面区域设置决定，无法在程序内单独切换。"
+
+#: src/intro.rs:526
 msgid "You are all set"
 msgstr "设置完成"
 
-#: src/intro.rs:218
+#: src/intro.rs:530
 msgid "Press Super+R to open the run dialog at any time."
 msgstr "随时按 Super+R 即可打开运行对话框。"
 
-#: src/intro.rs:225
+#: src/intro.rs:533
 msgid "Run \"run-dialog settings\" to revisit the options."
 msgstr "输入 run-dialog settings 可随时回到设置界面。"
+
+#: src/intro.rs:617
+msgid "an unnamed shortcut"
+msgstr "一个未命名的快捷键"
+
+#: src/intro.rs:650
+msgid "Show the run command prompt"
+msgstr "显示运行命令提示符"
+
+#~ msgid ""
+#~ "The next page covers a couple of options. You can change them later in "
+#~ "Settings."
+#~ msgstr "下一页是几个可选设置项，之后随时可以在设置里修改。"
 
 #~ msgid "Several apps match \"{1}\". Pick one:"
 #~ msgstr "有多个应用匹配“{1}”。请选择要运行的程序："

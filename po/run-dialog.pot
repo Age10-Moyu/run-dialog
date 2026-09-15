@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: run-dialog\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-15 22:43+0800\n"
+"POT-Creation-Date: 2026-09-15 23:00+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -205,16 +205,16 @@ msgid ""
 "default, experimental only."
 msgstr ""
 
-#: src/settings.rs:65 src/intro.rs:170
+#: src/settings.rs:65 src/intro.rs:292
 msgid "Enable Windows path translation"
 msgstr ""
 
-#: src/settings.rs:67 src/intro.rs:172
+#: src/settings.rs:67 src/intro.rs:294
 msgid ""
 "Map C:\\ paths to their Linux counterparts and translate common .exe names"
 msgstr ""
 
-#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:242
+#: src/settings.rs:78 src/settings.rs:104 src/settings.rs:138 src/intro.rs:550
 msgid "Failed to save settings: {1}"
 msgstr ""
 
@@ -222,11 +222,11 @@ msgstr ""
 msgid "Behavior"
 msgstr ""
 
-#: src/settings.rs:91 src/intro.rs:181
+#: src/settings.rs:91 src/intro.rs:302
 msgid "Choose when several apps match"
 msgstr ""
 
-#: src/settings.rs:93 src/intro.rs:183
+#: src/settings.rs:93 src/intro.rs:304
 msgid "Show a list to pick from instead of launching the first match"
 msgstr ""
 
@@ -260,48 +260,221 @@ msgstr ""
 msgid "Application ID"
 msgstr ""
 
-#: src/intro.rs:21 src/intro.rs:129
+#: src/intro.rs:67 src/intro.rs:213
 msgid "Welcome to Run"
 msgstr ""
 
-#: src/intro.rs:47
+#: src/intro.rs:96
 msgid "Back"
 msgstr ""
 
-#: src/intro.rs:48 src/intro.rs:79
+#: src/intro.rs:97 src/intro.rs:127
 msgid "Next"
 msgstr ""
 
-#: src/intro.rs:77
+#: src/intro.rs:125
 msgid "Done"
 msgstr ""
 
-#: src/intro.rs:134
+#: src/intro.rs:217
 msgid "Type a command, a path or a web address, then press Enter."
 msgstr ""
 
-#: src/intro.rs:142
+#: src/intro.rs:220
 msgid ""
-"The next page covers a couple of options. You can change them later in "
-"Settings."
+"The next few pages cover the shortcuts, appearance and a couple of options."
 msgstr ""
 
-#: src/intro.rs:161
+#: src/intro.rs:233
+msgid "Why use this instead?"
+msgstr ""
+
+#: src/intro.rs:238
+msgid "Compared with the GNOME run dialog"
+msgstr ""
+
+#: src/intro.rs:246
+msgid "Finds commands, files, folders and apps in one box"
+msgstr ""
+
+#: src/intro.rs:247
+msgid ""
+"A single lookup order covers executables, paths, desktop entries and URLs, "
+"so you never have to think about which one you are typing."
+msgstr ""
+
+#: src/intro.rs:250
+msgid "Never goes through a shell"
+msgstr ""
+
+#: src/intro.rs:251
+msgid ""
+"Arguments are passed as an argument vector, so wildcards, pipes and "
+"variables are not silently expanded. This avoids injection surprises."
+msgstr ""
+
+#: src/intro.rs:254
+msgid "Opens a terminal only when the program needs one"
+msgstr ""
+
+#: src/intro.rs:255
+msgid ""
+"Interpreters such as python or gdb are detected and wrapped in a terminal "
+"automatically; ls or cat are left alone."
+msgstr ""
+
+#: src/intro.rs:258
+msgid "Runs programs as administrator, UAC style"
+msgstr ""
+
+#: src/intro.rs:259
+msgid ""
+"A consent dialog collects your password and hands it to sudo's askpass "
+"helper. The password is wiped from memory as soon as it is used."
+msgstr ""
+
+#: src/intro.rs:285
 msgid "Choose your preferences"
 msgstr ""
 
-#: src/intro.rs:192
+#: src/intro.rs:313
 msgid "Both options are off by default, matching the Windows Run box."
 msgstr ""
 
-#: src/intro.rs:213
+#: src/intro.rs:326
+msgid "Set up a shortcut"
+msgstr ""
+
+#: src/intro.rs:331
+msgid "Keyboard shortcut"
+msgstr ""
+
+#: src/intro.rs:338 src/intro.rs:365
+msgid "Super+R is already set up for Run."
+msgstr ""
+
+#: src/intro.rs:342
+msgid "{1} currently uses Super+R."
+msgstr ""
+
+#: src/intro.rs:344
+msgid "Super+R is free."
+msgstr ""
+
+#: src/intro.rs:348
+msgid "Open Run with Super+R"
+msgstr ""
+
+#: src/intro.rs:352
+msgid "Set Up"
+msgstr ""
+
+#: src/intro.rs:369
+msgid "Could not set up the shortcut: {1}"
+msgstr ""
+
+#: src/intro.rs:379
+msgid "Setting it up will override the shortcut that uses it now."
+msgstr ""
+
+#: src/intro.rs:398
+msgid "Pick an appearance"
+msgstr ""
+
+#: src/intro.rs:403
+msgid "Interface style"
+msgstr ""
+
+#: src/intro.rs:410
+msgid "Follow the system"
+msgstr ""
+
+#: src/intro.rs:411
+msgid "Use whatever the desktop is already set to"
+msgstr ""
+
+#: src/intro.rs:416
+msgid "Light"
+msgstr ""
+
+#: src/intro.rs:417
+msgid "Always use the light style"
+msgstr ""
+
+#: src/intro.rs:422
+msgid "Dark"
+msgstr ""
+
+#: src/intro.rs:423
+msgid "Always use the dark style"
+msgstr ""
+
+#: src/intro.rs:459
+msgid "This changes the appearance for the whole desktop, not just Run."
+msgstr ""
+
+#: src/intro.rs:472
+msgid "Interface language"
+msgstr ""
+
+#: src/intro.rs:477
+msgid "How the language is chosen"
+msgstr ""
+
+#: src/intro.rs:480
+msgid "(not set)"
+msgstr ""
+
+#: src/intro.rs:485
+msgid "Current system language"
+msgstr ""
+
+#: src/intro.rs:487
+msgid "Locale name"
+msgstr ""
+
+#: src/intro.rs:489
+msgid "Looks valid."
+msgstr ""
+
+#: src/intro.rs:491
+msgid "This is not a valid locale name, so English is used instead."
+msgstr ""
+
+#: src/intro.rs:495
+msgid "Translation installed"
+msgstr ""
+
+#: src/intro.rs:497
+msgid "Found at {1}"
+msgstr ""
+
+#: src/intro.rs:498
+msgid "Not found. Run the installer to copy it."
+msgstr ""
+
+#: src/intro.rs:513
+msgid ""
+"Run decides its language from the desktop locale. It cannot be switched "
+"inside the program."
+msgstr ""
+
+#: src/intro.rs:526
 msgid "You are all set"
 msgstr ""
 
-#: src/intro.rs:218
+#: src/intro.rs:530
 msgid "Press Super+R to open the run dialog at any time."
 msgstr ""
 
-#: src/intro.rs:225
+#: src/intro.rs:533
 msgid "Run \"run-dialog settings\" to revisit the options."
+msgstr ""
+
+#: src/intro.rs:617
+msgid "an unnamed shortcut"
+msgstr ""
+
+#: src/intro.rs:650
+msgid "Show the run command prompt"
 msgstr ""

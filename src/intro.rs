@@ -1,33 +1,78 @@
 //! 首次运行引导（`run-dialog intro`）。
 //!
-//! 用 libadwaita 的 `Carousel` 做多页向导：欢迎 → 偏好设置 → 完成。
-//! 只手动触发（`run-dialog intro`），不做「配置不存在时自动弹出」——
-//! 用户可能只是想让程序安静地跑起来，突然弹窗会显得冒犯。
+//! 用 libadwaita 的 `Carousel` 做多页向导：
 //!
-//! 偏好项直接读写 [`crate::config::Config`]，与设置窗口共用同一份配置，
-//! 因此两边看到的状态始终一致。
+//!   1. 欢迎
+//!   2. 为什么用它（相比 GNOME 自带运行窗口的优势）
+//!   3. 偏好选项（Windows 兼容层 / 多候选选择）
+//!   4. 快捷键（Super+R，含冲突检测）
+//!   5. 外观（跟随系统 / 浅色 / 深色）
+//!   6. 语言（说明生效条件，并检测当前环境）
+//!   7. 完成
+//!
+//! 只手动触发（`run-dialog intro`）。安装脚本 `scripts/install.sh` 完成后
+//! 会询问是否调起本向导，从而把「装文件」与「设偏好」两件事分开。
+//!
+//! 偏好项直接读写 [`crate::config::Config`] 或 gsettings，
+//! 与设置窗口共用同一份状态，因此两边看到的结果始终一致。
 
 use adw::prelude::*;
 use libadwaita as adw;
 
-use crate::i18n::{t, tf};
+use crate::i18n::{t, tf, N_};
 
-/// 引导页数，用于「第 N 步 / 共 M 步」与末页判定。
-const PAGE_COUNT: u32 = 3;
+/// 引导页数，用于末页判定。
+const PAGE_COUNT: u32 = 7;
+
+// ============================================================
+//  GNOME 快捷键（gsettings）常量
+// ============================================================
+
+const KEYBINDING_PATH: &str =
+    "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/run-dialog/";
+const MEDIA_KEYS_SCHEMA: &str = "org.gnome.settings-daemon.plugins.media-keys";
+const CUSTOM_SCHEMA_PREFIX: &str =
+    "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:";
+
+/// 界面外观的三种取值（对应 gsettings 的 color-scheme）。
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum ColorScheme {
+    Default,
+    Light,
+    Dark,
+}
+
+impl ColorScheme {
+    fn gsettings_value(self) -> &'static str {
+        match self {
+            Self::Default => "default",
+            Self::Light => "prefer-light",
+            Self::Dark => "prefer-dark",
+        }
+    }
+
+    /// 从 gsettings 的当前值反推，用于初始化单选状态。
+    fn from_gsettings(s: &str) -> Self {
+        match s.trim_matches('\'') {
+            "prefer-light" => Self::Light,
+            "prefer-dark" => Self::Dark,
+            _ => Self::Default,
+        }
+    }
+}
 
 pub fn build_intro_window(app: &gtk::Application) {
     let window = adw::ApplicationWindow::builder()
         .application(app)
         .title(&t("Welcome to Run"))
-        .default_width(560)
-        .default_height(520)
+        .default_width(620)
+        .default_height(620)
         // 引导过程会写配置，禁止拉得过小导致按钮挤在一起
         .resizable(false)
         .build();
 
     let toolbar = adw::ToolbarView::new();
     let header = adw::HeaderBar::new();
-    // 引导窗口不提供最小化等常规操作，标题栏保持简洁
     toolbar.add_top_bar(&header);
 
     // ---------- 内容轮播 ----------
@@ -37,7 +82,11 @@ pub fn build_intro_window(app: &gtk::Application) {
     carousel.set_vexpand(true);
 
     carousel.append(&build_welcome_page());
+    carousel.append(&build_why_page());
     carousel.append(&build_preferences_page());
+    carousel.append(&build_shortcut_page());
+    carousel.append(&build_appearance_page());
+    carousel.append(&build_language_page());
     carousel.append(&build_done_page());
 
     // ---------- 底部：页码指示 + 按钮 ----------
@@ -63,7 +112,6 @@ pub fn build_intro_window(app: &gtk::Application) {
     toolbar.add_bottom_bar(&bottom);
 
     // ---------- 状态同步 ----------
-    // 首页时「返回」无意义，末页时「下一步」变为「完成」
     let sync_buttons = {
         let carousel = carousel.clone();
         let back_btn = back_btn.clone();
@@ -108,64 +156,138 @@ pub fn build_intro_window(app: &gtk::Application) {
         }
     });
 
-    // Esc 关闭：libadwaita 的默认行为，这里显式说明依赖它
     toolbar.set_content(Some(&carousel));
     window.set_content(Some(&toolbar));
     window.present();
 }
 
-/// 第 1 页：欢迎 + 说明能做什么。
-fn build_welcome_page() -> gtk::Widget {
-    let box_ = gtk::Box::new(gtk::Orientation::Vertical, 18);
-    box_.set_valign(gtk::Align::Center);
-    box_.set_margin_start(36);
-    box_.set_margin_end(36);
+// ============================================================
+//  页面构件
+// ============================================================
 
-    let icon = gtk::Image::from_icon_name("system-run-symbolic");
-    icon.set_pixel_size(96);
-    icon.add_css_class("dim-label");
-    box_.append(&icon);
-
-    let title = gtk::Label::new(Some(&t("Welcome to Run")));
-    title.add_css_class("title-1");
-    box_.append(&title);
-
-    let subtitle = gtk::Label::new(Some(&t(
-        "Type a command, a path or a web address, then press Enter.",
-    )));
-    subtitle.add_css_class("dim-label");
-    subtitle.set_wrap(true);
-    subtitle.set_justify(gtk::Justification::Center);
-    box_.append(&subtitle);
-
-    let hint = gtk::Label::new(Some(&t(
-        "The next page covers a couple of options. You can change them later in Settings.",
-    )));
-    hint.add_css_class("dim-label");
-    hint.set_wrap(true);
-    hint.set_justify(gtk::Justification::Center);
-    box_.append(&hint);
-
-    box_.upcast()
+/// 统一的页面容器：垂直居中 + 左右留白。
+fn page_box(spacing: i32) -> gtk::Box {
+    let b = gtk::Box::new(gtk::Orientation::Vertical, spacing);
+    b.set_valign(gtk::Align::Center);
+    b.set_margin_start(36);
+    b.set_margin_end(36);
+    b
 }
 
-/// 第 2 页：偏好设置（两个开关，直接写入 config.ini）。
+/// 大号图标 + 标题的页首。
+fn page_heading(icon_name: &str, title: &str, icon_class: Option<&str>) -> gtk::Box {
+    let b = gtk::Box::new(gtk::Orientation::Vertical, 12);
+    b.set_halign(gtk::Align::Center);
+
+    let icon = gtk::Image::from_icon_name(icon_name);
+    icon.set_pixel_size(88);
+    icon.add_css_class(icon_class.unwrap_or("dim-label"));
+    b.append(&icon);
+
+    let label = gtk::Label::new(Some(title));
+    label.add_css_class("title-1");
+    label.set_wrap(true);
+    label.set_justify(gtk::Justification::Center);
+    b.append(&label);
+
+    b
+}
+
+/// 居中的次要说明文字。
+fn dim_label(text: &str) -> gtk::Label {
+    let l = gtk::Label::new(Some(text));
+    l.add_css_class("dim-label");
+    l.set_wrap(true);
+    l.set_justify(gtk::Justification::Center);
+    l
+}
+
+// ============================================================
+//  第 1 页：欢迎
+// ============================================================
+
+fn build_welcome_page() -> gtk::Widget {
+    let b = page_box(18);
+    b.append(&page_heading(
+        "system-run-symbolic",
+        &t("Welcome to Run"),
+        None,
+    ));
+    b.append(&dim_label(&t(
+        "Type a command, a path or a web address, then press Enter.",
+    )));
+    b.append(&dim_label(&t(
+        "The next few pages cover the shortcuts, appearance and a couple of options.",
+    )));
+    b.upcast()
+}
+
+// ============================================================
+//  第 2 页：为什么用它
+// ============================================================
+
+fn build_why_page() -> gtk::Widget {
+    let b = page_box(18);
+    b.append(&page_heading(
+        "starred-symbolic",
+        &t("Why use this instead?"),
+        Some("accent"),
+    ));
+
+    let group = adw::PreferencesGroup::new();
+    group.set_title(&t("Compared with the GNOME run dialog"));
+
+    // 每条优势用 ActionRow 表达：标题给结论，副标题给原因。
+    //
+    // 字符串先存进数组、之后才经变量传给 t()，xgettext 无法识别，
+    // 因此用 N_() 标记（展开为原串，见 i18n::N_）。
+    let rows: [(&str, &str); 4] = [
+        (
+            N_("Finds commands, files, folders and apps in one box"),
+            N_("A single lookup order covers executables, paths, desktop entries and URLs, so you never have to think about which one you are typing."),
+        ),
+        (
+            N_("Never goes through a shell"),
+            N_("Arguments are passed as an argument vector, so wildcards, pipes and variables are not silently expanded. This avoids injection surprises."),
+        ),
+        (
+            N_("Opens a terminal only when the program needs one"),
+            N_("Interpreters such as python or gdb are detected and wrapped in a terminal automatically; ls or cat are left alone."),
+        ),
+        (
+            N_("Runs programs as administrator, UAC style"),
+            N_("A consent dialog collects your password and hands it to sudo's askpass helper. The password is wiped from memory as soon as it is used."),
+        ),
+    ];
+
+    for (title, subtitle) in rows {
+        let row = adw::ActionRow::builder()
+            .title(&t(title))
+            .subtitle(&t(subtitle))
+            .build();
+        group.add(&row);
+    }
+
+    b.append(&group);
+    b.upcast()
+}
+
+// ============================================================
+//  第 3 页：偏好选项
+// ============================================================
+
 fn build_preferences_page() -> gtk::Widget {
     let cfg = crate::config::Config::load();
 
-    let content = gtk::Box::new(gtk::Orientation::Vertical, 18);
-    content.set_valign(gtk::Align::Center);
-    content.set_margin_start(24);
-    content.set_margin_end(24);
-
-    let title = gtk::Label::new(Some(&t("Choose your preferences")));
-    title.add_css_class("title-2");
-    title.set_halign(gtk::Align::Start);
-    content.append(&title);
+    let b = page_box(18);
+    b.append(&page_heading(
+        "preferences-system-symbolic",
+        &t("Choose your preferences"),
+        None,
+    ));
 
     let group = adw::PreferencesGroup::new();
 
-    // ---- Windows 兼容层 ----
     let compat_row = adw::SwitchRow::builder()
         .title(&t("Enable Windows path translation"))
         .subtitle(&t(
@@ -176,7 +298,6 @@ fn build_preferences_page() -> gtk::Widget {
     compat_row.connect_active_notify(|row| save_config(|c| c.enable_win_compat = row.is_active()));
     group.add(&compat_row);
 
-    // ---- 多候选选择 ----
     let pick_row = adw::SwitchRow::builder()
         .title(&t("Choose when several apps match"))
         .subtitle(&t(
@@ -187,49 +308,236 @@ fn build_preferences_page() -> gtk::Widget {
     pick_row.connect_active_notify(|row| save_config(|c| c.pick_desktop = row.is_active()));
     group.add(&pick_row);
 
-    content.append(&group);
-
-    let note = gtk::Label::new(Some(&t("Both options are off by default, matching the Windows Run box.")));
-    note.add_css_class("dim-label");
-    note.set_wrap(true);
-    note.set_justify(gtk::Justification::Center);
-    content.append(&note);
-
-    content.upcast()
+    b.append(&group);
+    b.append(&dim_label(&t(
+        "Both options are off by default, matching the Windows Run box.",
+    )));
+    b.upcast()
 }
 
-/// 第 3 页：完成，提示后续入口。
+// ============================================================
+//  第 4 页：快捷键
+// ============================================================
+
+fn build_shortcut_page() -> gtk::Widget {
+    let b = page_box(18);
+    b.append(&page_heading(
+        "preferences-desktop-keyboard-shortcuts-symbolic",
+        &t("Set up a shortcut"),
+        None,
+    ));
+
+    let group = adw::PreferencesGroup::new();
+    group.set_title(&t("Keyboard shortcut"));
+
+    // 先探测状态，用于决定初始文案
+    let occupied_by = super_r_taken_by();
+    let already_ours = own_binding_registered();
+
+    let status = if already_ours {
+        t("Super+R is already set up for Run.")
+    } else if let Some(ref owner) = occupied_by {
+        // msgid 保持纯 ASCII：xgettext 会把源码里的非 ASCII 字符
+        // 转义成 \u{....} 写进模板，翻译对不上。引号交给译文处理。
+        tf("{1} currently uses Super+R.", &[owner])
+    } else {
+        t("Super+R is free.")
+    };
+
+    let row = adw::ActionRow::builder()
+        .title(&t("Open Run with Super+R"))
+        .subtitle(&status)
+        .build();
+
+    let btn = gtk::Button::with_label(&t("Set Up"));
+    btn.set_valign(gtk::Align::Center);
+    if already_ours {
+        btn.set_sensitive(false);
+    }
+    row.add_suffix(&btn);
+    row.set_activatable_widget(Some(&btn));
+
+    // 点击后更新副标题，给出即时反馈
+    let row_clone = row.clone();
+    let btn_clone = btn.clone();
+    btn.connect_clicked(move |_| match register_shortcut() {
+        Ok(()) => {
+            row_clone.set_subtitle(&t("Super+R is already set up for Run."));
+            btn_clone.set_sensitive(false);
+        }
+        Err(e) => {
+            row_clone.set_subtitle(&tf("Could not set up the shortcut: {1}", &[&e]));
+        }
+    });
+
+    group.add(&row);
+    b.append(&group);
+
+    // 若被占用，提示会发生什么
+    if occupied_by.is_some() && !already_ours {
+        b.append(&dim_label(&t(
+            "Setting it up will override the shortcut that uses it now.",
+        )));
+    }
+
+    b.upcast()
+}
+
+// ============================================================
+//  第 5 页：外观
+// ============================================================
+
+fn build_appearance_page() -> gtk::Widget {
+    let current = gsettings_get("org.gnome.desktop.interface", "color-scheme")
+        .unwrap_or_else(|| "default".to_string());
+    let active = ColorScheme::from_gsettings(&current);
+
+    let b = page_box(18);
+    b.append(&page_heading(
+        "preferences-desktop-theme-symbolic",
+        &t("Pick an appearance"),
+        None,
+    ));
+
+    let group = adw::PreferencesGroup::new();
+    group.set_title(&t("Interface style"));
+
+    // 用 ActionRow + 单选按钮，比下拉列表更直观
+    let mut first: Option<gtk::CheckButton> = None;
+    for (scheme, title, subtitle, icon) in [
+        (
+            ColorScheme::Default,
+            N_("Follow the system"),
+            N_("Use whatever the desktop is already set to"),
+            "display-symbolic",
+        ),
+        (
+            ColorScheme::Light,
+            N_("Light"),
+            N_("Always use the light style"),
+            "weather-clear-symbolic",
+        ),
+        (
+            ColorScheme::Dark,
+            N_("Dark"),
+            N_("Always use the dark style"),
+            "weather-clear-night-symbolic",
+        ),
+    ] {
+        let row = adw::ActionRow::builder()
+            .title(&t(title))
+            .subtitle(&t(subtitle))
+            .build();
+
+        let check = gtk::CheckButton::new();
+        check.set_valign(gtk::Align::Center);
+        // 同一个「组」内互斥；第一个创建的作为组首
+        match &first {
+            None => first = Some(check.clone()),
+            Some(f) => check.set_group(Some(f)),
+        }
+        check.set_active(scheme == active);
+        row.add_prefix(&gtk::Image::from_icon_name(icon));
+        row.add_suffix(&check);
+        row.set_activatable_widget(Some(&check));
+
+        check.connect_toggled(move |c| {
+            if c.is_active() {
+                let _ = gsettings_set(
+                    "org.gnome.desktop.interface",
+                    "color-scheme",
+                    scheme.gsettings_value(),
+                );
+            }
+        });
+
+        group.add(&row);
+    }
+
+    b.append(&group);
+    b.append(&dim_label(&t(
+        "This changes the appearance for the whole desktop, not just Run.",
+    )));
+    b.upcast()
+}
+
+// ============================================================
+//  第 6 页：语言
+// ============================================================
+
+fn build_language_page() -> gtk::Widget {
+    let b = page_box(18);
+    b.append(&page_heading(
+        "preferences-desktop-locale-symbolic",
+        &t("Interface language"),
+        None,
+    ));
+
+    let group = adw::PreferencesGroup::new();
+    group.set_title(&t("How the language is chosen"));
+
+    // 环境检测：LANG 是否合法、译文是否已安装
+    let lang_var = std::env::var("LANG").unwrap_or_else(|_| t("(not set)"));
+    let valid_locale = is_valid_locale_name(&lang_var);
+    let catalog = find_catalog();
+
+    let rows: [(&str, String); 3] = [
+        (N_("Current system language"), lang_var),
+        (
+            N_("Locale name"),
+            if valid_locale {
+                t("Looks valid.")
+            } else {
+                t("This is not a valid locale name, so English is used instead.")
+            },
+        ),
+        (
+            N_("Translation installed"),
+            match catalog {
+                Some(ref p) => tf("Found at {1}", &[p]),
+                None => t("Not found. Run the installer to copy it."),
+            },
+        ),
+    ];
+
+    for (title, subtitle) in rows {
+        let row = adw::ActionRow::builder()
+            .title(&t(title))
+            .subtitle(&subtitle)
+            .build();
+        group.add(&row);
+    }
+
+    b.append(&group);
+    b.append(&dim_label(&t(
+        "Run decides its language from the desktop locale. It cannot be switched inside the program.",
+    )));
+    b.upcast()
+}
+
+// ============================================================
+//  第 7 页：完成
+// ============================================================
+
 fn build_done_page() -> gtk::Widget {
-    let box_ = gtk::Box::new(gtk::Orientation::Vertical, 18);
-    box_.set_valign(gtk::Align::Center);
-    box_.set_margin_start(36);
-    box_.set_margin_end(36);
-
-    let icon = gtk::Image::from_icon_name("object-select-symbolic");
-    icon.set_pixel_size(96);
-    icon.add_css_class("success");
-    box_.append(&icon);
-
-    let title = gtk::Label::new(Some(&t("You are all set")));
-    title.add_css_class("title-1");
-    box_.append(&title);
-
-    let subtitle = gtk::Label::new(Some(&t(
+    let b = page_box(18);
+    b.append(&page_heading(
+        "object-select-symbolic",
+        &t("You are all set"),
+        Some("success"),
+    ));
+    b.append(&dim_label(&t(
         "Press Super+R to open the run dialog at any time.",
     )));
-    subtitle.add_css_class("dim-label");
-    subtitle.set_wrap(true);
-    subtitle.set_justify(gtk::Justification::Center);
-    box_.append(&subtitle);
-
-    let hint = gtk::Label::new(Some(&t("Run \"run-dialog settings\" to revisit the options.")));
-    hint.add_css_class("dim-label");
-    hint.set_wrap(true);
-    hint.set_justify(gtk::Justification::Center);
-    box_.append(&hint);
-
-    box_.upcast()
+    b.append(&dim_label(&t(
+        "Run \"run-dialog settings\" to revisit the options.",
+    )));
+    b.upcast()
 }
+
+// ============================================================
+//  辅助函数
+// ============================================================
 
 /// 读取 → 修改 → 写回。
 ///
@@ -241,4 +549,142 @@ fn save_config(f: impl FnOnce(&mut crate::config::Config)) {
     if let Err(e) = cfg.save() {
         eprintln!("{}", tf("Failed to save settings: {1}", &[&e.to_string()]));
     }
+}
+
+// ---------------- gsettings ----------------
+
+fn gsettings_get(schema: &str, key: &str) -> Option<String> {
+    let out = std::process::Command::new("gsettings")
+        .args(["get", schema, key])
+        .output()
+        .ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    Some(String::from_utf8_lossy(&out.stdout).trim().to_string())
+}
+
+fn gsettings_set(schema: &str, key: &str, value: &str) -> Result<(), String> {
+    let out = std::process::Command::new("gsettings")
+        .args(["set", schema, key, value])
+        .output()
+        .map_err(|e| e.to_string())?;
+    if out.status.success() {
+        Ok(())
+    } else {
+        Err(String::from_utf8_lossy(&out.stderr).trim().to_string())
+    }
+}
+
+// ---------------- 快捷键 ----------------
+
+fn custom_schema() -> String {
+    format!("{CUSTOM_SCHEMA_PREFIX}{KEYBINDING_PATH}")
+}
+
+/// 当前所有自定义快捷键的路径列表。
+fn current_bindings() -> Vec<String> {
+    let raw = gsettings_get(MEDIA_KEYS_SCHEMA, "custom-keybindings").unwrap_or_default();
+    raw.trim_matches(|c| c == '[' || c == ']')
+        .split(',')
+        .map(|s| s.trim().trim_matches('\'').to_string())
+        .filter(|s| !s.is_empty())
+        .collect()
+}
+
+/// 我们已经注册过？
+fn own_binding_registered() -> bool {
+    current_bindings().iter().any(|p| p == KEYBINDING_PATH)
+}
+
+/// Super+R 是否被别的自定义快捷键占用；返回占用者名字。
+fn super_r_taken_by() -> Option<String> {
+    for path in current_bindings() {
+        if path == KEYBINDING_PATH {
+            continue;
+        }
+        let schema = format!("{CUSTOM_SCHEMA_PREFIX}{path}");
+        let binding = gsettings_get(&schema, "binding")
+            .unwrap_or_default()
+            .trim_matches('\'')
+            .to_lowercase();
+        if binding == "<super>r" {
+            let name = gsettings_get(&schema, "name")
+                .unwrap_or_default()
+                .trim_matches('\'')
+                .to_string();
+            return Some(if name.is_empty() {
+                t("an unnamed shortcut")
+            } else {
+                name
+            });
+        }
+    }
+    None
+}
+
+/// 注册 Super+R；已注册则不重复添加。
+fn register_shortcut() -> Result<(), String> {
+    if !own_binding_registered() {
+        let mut list = current_bindings();
+        list.push(KEYBINDING_PATH.to_string());
+        // gsettings 要求写回完整列表，不能只追加一项
+        let joined = list
+            .iter()
+            .map(|p| format!("'{p}'"))
+            .collect::<Vec<_>>()
+            .join(", ");
+        gsettings_set(
+            MEDIA_KEYS_SCHEMA,
+            "custom-keybindings",
+            &format!("[{joined}]"),
+        )?;
+    }
+
+    let schema = custom_schema();
+    // 命令用绝对路径：GNOME 会话的 PATH 不一定包含 ~/.local/bin
+    let exe = std::env::current_exe()
+        .map(|p| p.to_string_lossy().to_string())
+        .unwrap_or_else(|_| "run-dialog".to_string());
+
+    gsettings_set(&schema, "name", &t("Show the run command prompt"))?;
+    gsettings_set(&schema, "command", &exe)?;
+    gsettings_set(&schema, "binding", "<Super>r")?;
+    Ok(())
+}
+
+// ---------------- 语言检测 ----------------
+
+/// 判断 LANG 是否是可用的 locale 名。
+///
+/// 关键点：必须带编码后缀（`zh_CN.UTF-8`）。写成 `zh_CN` 时 glibc 不认，
+/// GTK 会退回 C locale，界面就变成英文了。
+fn is_valid_locale_name(lang: &str) -> bool {
+    let lang = lang.trim();
+    // glibc 接受的写法一定带 '.'（如 zh_CN.UTF-8），
+    // 或者是不带修饰的 C / POSIX。其余（如裸 "zh_CN"）会被忽略。
+    matches!(lang, "C" | "POSIX" | "C.UTF-8") || lang.contains('.')
+}
+
+/// 在常见位置寻找已安装的 `.mo`，找到则返回路径。
+fn find_catalog() -> Option<String> {
+    let mut roots: Vec<std::path::PathBuf> = Vec::new();
+
+    if let Some(dir) = std::env::var_os("RUN_DIALOG_LOCALEDIR") {
+        roots.push(dir.into());
+    }
+    if let Some(dir) = std::env::var_os("XDG_DATA_HOME") {
+        roots.push(std::path::PathBuf::from(dir).join("locale"));
+    } else if let Some(home) = std::env::var_os("HOME") {
+        roots.push(std::path::PathBuf::from(home).join(".local/share/locale"));
+    }
+    roots.push(std::path::PathBuf::from("/usr/share/locale"));
+
+    for root in roots {
+        let candidate = root.join("zh_CN/LC_MESSAGES/run-dialog.mo");
+        if candidate.is_file() {
+            return Some(candidate.to_string_lossy().to_string());
+        }
+    }
+    None
 }

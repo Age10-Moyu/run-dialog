@@ -139,6 +139,35 @@ pub fn t(msgid: &str) -> String {
     gettextrs::gettext(msgid)
 }
 
+/// 标记「稍后才翻译」的字符串，仅供 `xgettext` 提取。
+///
+/// `xgettext` 只能识别字面量**直接**传给 `t()` 的写法。文案若先存进数组、
+/// 之后才通过变量传给 `t()`，它就提取不到：
+///
+/// ```ignore
+/// t("Literal")                            // ✅ 能提取
+/// let rows = [("Literal", "Subtitle")];   // ❌ 提取不到
+/// ....title(&t(title))
+/// ```
+///
+/// 用 `N_()` 包住数组中的字符串，配合 `xgettext --keyword=N_` 即可收集：
+///
+/// ```ignore
+/// let rows = [(N_("Literal"), N_("Subtitle"))];
+/// ....title(&t(title))   // 运行时照常翻译
+/// ```
+///
+/// 它展开为**原字符串本身**，不产生翻译行为 —— 运行时翻译仍由 `t()` 完成。
+/// 若误把它当 `t()` 使用，界面会显示英文原文。
+///
+/// 用函数而非宏，是因为 `xgettext --keyword=N_` 识别的是函数调用写法
+/// `N_("...")`；宏需要写成 `N_!("...")`，提取不到。
+/// `non_snake_case` 是本函数名的有意例外。
+#[allow(non_snake_case)]
+pub const fn N_(msgid: &'static str) -> &'static str {
+    msgid
+}
+
 /// 取带占位符的文案。
 ///
 /// 占位符使用 gettext 的**位置记号** `{1}` `{2}`…，译文可自由调整语序或重复引用
