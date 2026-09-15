@@ -97,10 +97,6 @@ run-dialog 的行为视用户输入的内容而定。
 
 GPLv3。本来我想用 [SCUL](https://github.com/Age10-Moyu/SCUL) 的，但 Launchpad 不准。
 
-### [¶](#待办)待办
-
-- `run-dialog intro` 子命令：首次运行（或手动调用）时引导用户完成偏好设置（语言、外观、快捷键）。目前安装向导已覆盖这些步骤，尚未做成程序内命令。
-
 ### [¶](#脚注)脚注
 
 <a id="fn-zh-1"></a>\[1\] 具体来说，是将 Windows 下一些典范的「臃肿」项目移植到 Linux 下，以达到类似「忆苦思甜」的效果，同时好像也确实挺有趣的。<sup><a href="#ref-zh-1">↩</a></sup>
@@ -180,10 +176,6 @@ Me (Age10_Moyu) and DeepSeek V4.1 Flash.
 ### [¶](#licence)Licence
 
 GPLv3. I originally wanted to use [SCUL](https://github.com/Age10-Moyu/SCUL), but Launchpad would not allow it.
-
-### [¶](#to-do)To-do
-
-- A `run-dialog intro` subcommand: guide the user through preferences (language, appearance, shortcut) on first run or on demand. The install wizard already covers these steps; an in-program command does not exist yet.
 
 ### [¶](#footnotes)Footnotes
 

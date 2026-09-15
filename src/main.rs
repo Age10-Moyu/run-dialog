@@ -13,9 +13,9 @@ use std::sync::OnceLock;
 mod desktop;
 mod elevate;
 mod i18n;
+mod intro;
 mod launcher;
 mod settings;
-
 use i18n::{t, tf};
 
 pub const APP_ID: &str = "com.Age10_Moyu.RunDialog";
@@ -463,7 +463,13 @@ fn main() -> gtk::glib::ExitCode {
             return gtk::glib::ExitCode::SUCCESS;
         }
 
-        let settings_mode = args.iter().any(|a| a == "--settings");
+        // 设置窗口：`run-dialog settings`
+        // 与 `intro` 一致，采用无前缀子命令风格。
+        let settings_mode = args.iter().any(|a| a == "settings");
+
+        // 首次运行引导：`run-dialog intro`
+        // 只手动触发——用户可能只想让程序安静地跑起来，突然弹窗会显得冒犯。
+        let intro_mode = args.iter().any(|a| a == "intro");
 
         // askpass 模式：由 `sudo -A` 调用，从临时文件读出密码写到 stdout。
         // 必须在创建 GTK Application 之前返回——sudo 只关心 stdout。
@@ -513,7 +519,9 @@ fn main() -> gtk::glib::ExitCode {
         });
 
         app.connect_activate(move |app| {
-            if settings_mode {
+            if intro_mode {
+                intro::build_intro_window(app);
+            } else if settings_mode {
                 settings::build_settings_window(app);
             } else {
                 build_ui(app);
