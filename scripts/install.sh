@@ -145,6 +145,14 @@ install_files() {
             gtk-update-icon-cache -q -t -f "$PREFIX/icons/hicolor" >/dev/null 2>&1 || true
         fi
 
+        # 重建 man 索引。这步不能省：apropos 查的是 mandb 数据库，
+        # 而不是直接扫文件系统 —— 不更新索引的话，
+        # `man run-dialog` 能看，但 `apropos run-dialog` 搜不到。
+        if [[ -f "$MAN_DST_FILE" ]] && command -v mandb >/dev/null 2>&1; then
+            echo "# 更新手册索引…"
+            mandb -q "$PREFIX/man" >/dev/null 2>&1 || true
+        fi
+
         echo "# 完成"
         echo "100"
     ) 2>&1 | zenity --progress --title="$APP_TITLE" --width=420 \

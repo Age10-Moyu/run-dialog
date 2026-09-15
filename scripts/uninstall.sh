@@ -105,6 +105,11 @@ main() {
         gtk-update-icon-cache -q -t -f "$PREFIX/icons/hicolor" >/dev/null 2>&1 || true
     fi
 
+    # 重建 man 索引，否则 apropos 仍会列出已删掉的手册
+    if command -v mandb >/dev/null 2>&1; then
+        mandb -q "$PREFIX/man" >/dev/null 2>&1 || true
+    fi
+
     local msg="卸载完成。"
     if (( remove_config == 0 )); then
         msg="$msg\n\n配置与历史已保留在：\n$CONFIG_DIR/"
