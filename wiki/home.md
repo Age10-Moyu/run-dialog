@@ -12,8 +12,10 @@ README 面向使用者，Wiki 面向想动手的人。
 | 页面 | 内容 |
 |------|------|
 | [开发指南](development.md) | 代码结构、各模块职责、往哪儿改、怎么调试 |
+| [工具的使用](tools.md) | `scripts/` 下每个脚本做什么、何时用哪个 |
 | [重新生成译文](translations.md) | 改过文案后如何更新 `po/*.po` 与 `.mo` |
 | [打包](packaging.md) | 构建 deb、新增语言时的注意事项 |
+| [引导 AI 进行开发](agents.md) | 让 AI 帮着改代码时，提示词该怎么写 |
 
 ---
 
@@ -29,6 +31,8 @@ README 面向使用者，Wiki 面向想动手的人。
 **想改 `.desktop` 解析** → [`src/desktop.rs`](../src/desktop.rs)，注意 Exec 字段码要符合 XDG 规范
 
 **想改提权流程** → [`src/elevate.rs`](../src/elevate.rs)，涉及密码处理，改前先读该文件顶部注释
+
+**想让 AI 帮你改** → 见[引导 AI 进行开发](agents.md)，里面有提示词写法建议
 
 ---
 
@@ -47,6 +51,7 @@ src/
 scripts/           构建、安装、打包、推送等辅助脚本
 po/                gettext 译文
 resources/         图标与 .desktop 模板
+.memory/           开发笔记（已在 .gitignore 中排除）
 ```
 
 ## 常用命令
@@ -94,3 +99,9 @@ cargo test --release            # 139 项测试
 - **界面显示英文** → 见 [重新生成译文](translations.md) 的排查一节
 - **编译报找不到 sccache / mold** → 删掉 `.cargo/` 或安装它们，见 README
 - **改了文案但界面没变** → `.mo` 需要重新生成，见 [重新生成译文](translations.md)
+
+---
+
+## 作者
+
+DeepSeek。

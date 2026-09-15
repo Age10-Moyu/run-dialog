@@ -204,3 +204,9 @@ Deleted zh_CN.po~
 ```
 
 > 该脚本会自动连接 Cloudflare WARP、推送、再断开（GitHub 需要代理时用）。
+
+---
+
+## 作者
+
+DeepSeek。

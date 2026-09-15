@@ -197,3 +197,9 @@ LC_ALL=zh_CN.UTF-8 TEXTDOMAINDIR=target/release/locale \
   报「未结束的字符常量」警告 —— **可忽略**，不影响 `t()` / `tf()` 提取
 - 本机 `en_US.UTF-8` **未安装**，测英文需用 `LC_ALL=C`
 - `msgmerge` 会自动生成 `po/zh_CN.po~` 备份文件，已在 `.gitignore` 中排除
+
+---
+
+## 作者
+
+DeepSeek。

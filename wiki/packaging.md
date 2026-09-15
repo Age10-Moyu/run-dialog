@@ -166,3 +166,9 @@ dpkg -L run-dialog
 > **注意**：Super+R 快捷键如果指向裸命令 `run-dialog`，会命中 `~/.local/bin/`
 > 那份。长期并存会导致「apt 更新了系统级，但实际跑的是用户级」的困惑。
 > 建议二选一。
+
+---
+
+## 作者
+
+DeepSeek。
