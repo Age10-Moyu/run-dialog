@@ -2,3 +2,7 @@
 */.DS_STORE
 .memory/
 target/
+
+# gettext 工具（msgmerge 等）产生的备份文件
+*.po~
+*.pot~
