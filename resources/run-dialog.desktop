@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Run
+Name[zh_CN]=运行
+GenericName=Run a command
+GenericName[zh_CN]=运行命令
+Comment=Open a program, document or Internet resource by name
+Comment[zh_CN]=按名称打开程序、文档或 Internet 资源
+Exec=run-dialog
+Icon=run-dialog
+Terminal=false
+Categories=Utility;System;
+Keywords=run;launch;command;
+Keywords[zh_CN]=运行;启动;命令;
+StartupNotify=true

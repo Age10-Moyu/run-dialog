@@ -1,0 +1,3 @@
+# 需要提取文案的源文件（相对仓库根目录）。
+src/main.rs
+src/settings.rs

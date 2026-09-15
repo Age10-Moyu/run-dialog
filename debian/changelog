@@ -1,0 +1,14 @@
+run-dialog (0.1.0-1) unstable; urgency=medium
+
+  * Initial release.
+  * Command resolution following the XDG Desktop Entry and Exec specs:
+    URLs and known URI schemes, explicit paths, current directory,
+    system binary directories, $PATH, then .desktop entries from the
+    XDG, Flatpak and Snap application databases.
+  * Interactive programs are detected and launched inside a terminal
+    emulator; no shell is ever invoked.
+  * Privileged programs raise a UAC-style consent dialog authenticated
+    through sudo's askpass helper.
+  * Chinese (zh_CN) translation shipped via gettext.
+
+ -- Age10_Moyu <yx_zyz20120418@163.com>  Tue, 15 Sep 2026 08:00:00 +0800

@@ -1,0 +1,57 @@
+[package]
+name = "run-dialog"
+version = "0.1.0"
+edition = "2021"
+# 构建脚本放在 build/ 子目录，需显式声明（Cargo 默认只找根目录的 build.rs）
+build = "build/main.rs"
+description = "Try to mimic Windows' \"Run\" window as closely as possible on Linux"
+authors = ["Age10_Moyu <yx_zyz20120418@163.com>"]
+license = "GPL-3.0-or-later"
+homepage = "https://github.com/Age10-Moyu/run-dialog"
+repository = "https://github.com/Age10-Moyu/run-dialog"
+[dependencies]
+gtk = { package = "gtk4", version = "0.9", features = ["v4_12"] }
+libadwaita = { version = "0.7", features = ["v1_4"] }
+glib = "0.20"
+gettext-rs = { version = "0.8.0", features = ["gettext-system"] }
+shlex = "2.0.1"
+
+[package.metadata.deb]
+name = "run-dialog"
+maintainer = "Age10_Moyu <yx_zyz20120418@163.com>"
+copyright = "2026, Age10_Moyu <yx_zyz20120418@163.com>"
+changelog = "debian/changelog"
+extended-description = """\
+GNOME-style "Run" dialog, written in Rust with GTK4 and libadwaita.
+
+It resolves commands the way a desktop environment would: URLs and known
+schemes are handed to the default handler, explicit paths are launched (or
+opened with xdg-open when they are not executable), then binaries from the
+current directory, the system directories and $PATH are tried, followed by
+application entries from the XDG, Flatpak and Snap application databases.
+Interactive programs are automatically run inside a terminal emulator, and
+privileged programs raise a Windows-style UAC-style consent dialog that
+authenticates through sudo's askpass helper.
+"""
+depends = "$auto, xdg-utils"
+section = "utils"
+priority = "optional"
+assets = [
+    # 主程序
+    ["target/release/run-dialog", "usr/bin/", "755"],
+    # 桌面入口（应用菜单 / 固定到 Dock）
+    ["resources/run-dialog.desktop", "usr/share/applications/", "644"],
+    # 应用图标（.desktop 的 Icon=run-dialog 指向它）
+    ["resources/icon.png", "usr/share/icons/hicolor/256x256/apps/run-dialog.png", "644"],
+    # gettext 译文（build.rs 生成于 target/release/locale/<lang>/LC_MESSAGES/）
+    # 注意：cargo-deb 的 assets 不支持通配符展开，新增语言时必须在此登记
+    ["target/release/locale/zh_CN/LC_MESSAGES/run-dialog.mo", "usr/share/locale/zh_CN/LC_MESSAGES/", "644"],
+]
+
+[profile.release]
+opt-level = "z"
+lto = true
+strip = true
+codegen-units = 1
+
+[target.'cfg(target_os = "macos")'.dependencies]
