@@ -44,7 +44,7 @@ Technology has no borders, but language does. Sorry qwq
 
 无论通过何种方式安装，只需按照安装时运行的脚本指示即可。
 
-`ostd.sh` 会依次完成：检查工具链 → 编译 → 调用图形化安装向导（装文件、注册快捷键、设置外观）。若程序已编译过、只想重新安装，可直接运行 `scripts/install`。
+`ostd.sh` 会依次完成：检查工具链 → 编译 → 调用图形化安装向导（装文件、注册快捷键、设置外观）。若程序已编译过、只想重新安装，可直接运行 `scripts/install.sh`。
 
 #### [¶](#构建依赖)构建依赖
 
@@ -124,7 +124,7 @@ It explicitly does **not** work on Windows — running it there will simply brin
 
 Either way, just follow the instructions printed by the install script.
 
-`ostd.sh` checks the toolchain, builds the project, then hands over to the graphical installer (which copies files, registers the shortcut and configures the appearance). If you have already built and only want to reinstall, run `scripts/install` directly.
+`ostd.sh` checks the toolchain, builds the project, then hands over to the graphical installer (which copies files, registers the shortcut and configures the appearance). If you have already built and only want to reinstall, run `scripts/install.sh` directly.
 
 #### [¶](#build-dependencies)Build dependencies
 

@@ -10,7 +10,7 @@
 #   - 同目录的 ./build.sh        编译（release）
 #   - 同目录的 ./install         图形化安装向导
 #
-# 若你只想重新安装（已编译过），可直接运行 ./scripts/install。
+# 若你只想重新安装（已编译过），可直接运行 ./scripts/install.sh。
 
 set -uo pipefail
 
@@ -60,4 +60,4 @@ fi
 
 # install 自己会做前置检查、装文件、问 PATH、注册快捷键、选外观、说明语言，
 # 所以这里不需要重复实现，直接转交即可。
-exec "$SCRIPT_DIR/install" "$@"
+exec "$SCRIPT_DIR/install.sh" "$@"
